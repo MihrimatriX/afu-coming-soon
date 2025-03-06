@@ -1,101 +1,136 @@
-import Image from "next/image";
+'use client';
+import styles from './page.module.css';
+import { useEffect, useState, useCallback, useRef } from 'react';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+  const subtitlesRef = useRef<HTMLElement[]>([]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const updateCursorPosition = useCallback((e: MouseEvent) => {
+    setCursorPos({ x: e.clientX, y: e.clientY });
+  }, []);
+
+  useEffect(() => {
+    document.body.style.cursor = 'none';
+    const handleMouseMove = (e: MouseEvent) => {
+      requestAnimationFrame(() => updateCursorPosition(e));
+    };
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => {
+      document.body.style.cursor = 'auto';
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [updateCursorPosition]);
+
+  useEffect(() => {
+    // Subtitle animation control
+    const subtitleElements = document.querySelectorAll(`.${styles.subTitle}`) as NodeListOf<HTMLElement>;
+    subtitlesRef.current = Array.from(subtitleElements);
+
+    // İlk başta tüm alt yazıları gizle
+    subtitlesRef.current.forEach(subtitle => {
+      subtitle.classList.remove(styles.active);
+    });
+
+    // İlk alt yazıyı göster
+    if (subtitlesRef.current.length > 0) {
+      subtitlesRef.current[0].classList.add(styles.active);
+    }
+
+    let currentIndex = 0;
+
+    const interval = setInterval(() => {
+      // Aktif alt yazıyı gizle
+      if (subtitlesRef.current[currentIndex]) {
+        subtitlesRef.current[currentIndex].classList.remove(styles.active);
+      }
+
+      // Sonraki alt yazıya geç
+      currentIndex = (currentIndex + 1) % subtitlesRef.current.length;
+
+      // Yeni alt yazıyı göster
+      if (subtitlesRef.current[currentIndex]) {
+        subtitlesRef.current[currentIndex].classList.add(styles.active);
+      }
+    }, 7000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleLinkClick = (url: string) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleMouseEnter = () => setIsHovered(true);
+  const handleMouseLeave = () => setIsHovered(false);
+
+  return (
+    <main className={styles.main}>
+      <div className={styles.screen}>
+        <div className={styles.screenGlass}></div>
+        <div className={styles.scanlines}></div>
+        <div className={styles.noise}></div>
+        <div className={styles.content}>
+          <h1 className={styles.mainTitle} data-text="PEK YAKINDA">PEK YAKINDA</h1>
+          <div className={styles.subtitleContainer}>
+            <h2 className={styles.subTitle} data-text="Computer Graphics...">Computer Graphics...</h2>
+            <h2 className={styles.subTitle} data-text="Geek Konular...">Geek Konular...</h2>
+            <h2 className={styles.subTitle} data-text="Birşeyler Buluruz...">Birşeyler Buluruz...</h2>
+          </div>
+          <div className={styles.socialLinks}>
+            <button
+              className={styles.socialLink}
+              onClick={() => handleLinkClick('https://github.com/MihrimatriX')}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              data-text="GITHUB"
+            >
+              <div className={styles.iconWrapper}>
+                <svg className={styles.icon} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.605-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12" />
+                </svg>
+              </div>
+              GITHUB
+            </button>
+            <button
+              className={styles.socialLink}
+              onClick={() => handleLinkClick('https://www.linkedin.com/in/ahmet-furkan-gapil/')}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              data-text="LINKEDIN"
+            >
+              <div className={styles.iconWrapper}>
+                <svg className={styles.icon} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                </svg>
+              </div>
+              LINKEDIN
+            </button>
+            <button
+              className={styles.socialLink}
+              onClick={() => handleLinkClick('mailto:afurgapil@gmail.com')}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              data-text="EMAIL"
+            >
+              <div className={styles.iconWrapper}>
+                <svg className={styles.icon} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z" />
+                </svg>
+              </div>
+              EMAIL
+            </button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+      <div
+        className={`${styles.customCursor} ${isHovered ? styles.hover : ''}`}
+        style={{
+          left: `${cursorPos.x}px`,
+          top: `${cursorPos.y}px`
+        }}
+      />
+    </main>
   );
 }
