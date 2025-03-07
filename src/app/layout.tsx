@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Ahmet Faruk Uzunkaya",
@@ -13,8 +14,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta property="og:title" content="Ahmet Faruk Uzunkaya" />
+      </head>
       <body>
         {children}
+        <Script
+          id="favicon-script"
+          src="/favicon.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
