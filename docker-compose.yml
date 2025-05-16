@@ -12,3 +12,10 @@ services:
     restart: always
     volumes:
       - ./public:/app/public
+    networks:
+      - proxy-network
+
+networks:
+  proxy-network:
+    driver: bridge
+    external: true
