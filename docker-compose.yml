@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  afu-coming-soon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8085:3000"
+    environment:
+      - NODE_ENV=production
+    restart: always
+    volumes:
+      - ./public:/app/public
+    networks:
+      - proxy-network
+
+networks:
+  proxy-network:
+    driver: bridge
+    external: true
