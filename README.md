@@ -196,7 +196,3 @@ This is a private project.
 - Hover effects
 - Smooth animations
 - Responsive design
-
----
-
-⭐ If you liked this project, don't forget to give it a star!
