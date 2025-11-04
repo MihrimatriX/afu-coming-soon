@@ -1,27 +1,23 @@
 # AFU Coming Soon
 
-Modern ve etkileşimli bir "Yakında" (Coming Soon) sayfası. Retro CRT TV ekranı efektleri, glitch animasyonları ve özel cursor tasarımı ile göz alıcı bir kullanıcı deneyimi sunar.
+A modern and interactive "Coming Soon" page featuring retro CRT TV screen effects, glitch animations, and custom cursor design that delivers a stunning user experience.
 
-## 📝 Tek Cümlelik Açıklama
-
-Retro CRT TV ekranı efektleri ve glitch animasyonları ile süslenmiş, Next.js ve React 19 ile geliştirilmiş modern bir "yakında" sayfası.
-
-## 🏷️ Tag'ler
+## 🏷️ Tags
 
 `nextjs` `react` `typescript` `tailwindcss` `coming-soon` `retro` `crt-effect` `glitch-animation` `custom-cursor` `docker` `modern-ui` `interactive` `full-stack-developer` `computer-graphics` `geek`
 
-## 🚀 Özellikler
+## 🚀 Features
 
-- **Retro CRT TV Efekti**: Gerçekçi eski televizyon ekranı görünümü
-- **Glitch Animasyonları**: RGB renk kayması ve metin glitch efektleri
-- **Özel Cursor**: Interaktif ve animasyonlu özel fare imleci
-- **Dinamik Alt Başlıklar**: Otomatik dönen ve yazılan alt başlıklar
-- **Sosyal Medya Entegrasyonu**: GitHub, LinkedIn ve Email linkleri
-- **Responsive Tasarım**: Mobil ve masaüstü uyumlu
-- **Docker Desteği**: Kolay deployment için Docker yapılandırması
-- **Performans Optimizasyonu**: Next.js 15 ve React 19 ile optimize edilmiş
+- **Retro CRT TV Effect**: Realistic old television screen appearance
+- **Glitch Animations**: RGB color shift and text glitch effects
+- **Custom Cursor**: Interactive and animated custom mouse cursor
+- **Dynamic Subtitles**: Auto-rotating and typing subtitles
+- **Social Media Integration**: GitHub, LinkedIn, and Email links
+- **Responsive Design**: Mobile and desktop compatible
+- **Docker Support**: Docker configuration for easy deployment
+- **Performance Optimization**: Optimized with Next.js 15 and React 19
 
-## 🛠️ Teknolojiler
+## 🛠️ Technologies
 
 - **Framework**: Next.js 15.2.1
 - **UI Library**: React 19
@@ -30,100 +26,100 @@ Retro CRT TV ekranı efektleri ve glitch animasyonları ile süslenmiş, Next.js
 - **Build Tool**: Turbopack (dev mode)
 - **Containerization**: Docker & Docker Compose
 
-## 📦 Kurulum
+## 📦 Installation
 
-### Gereksinimler
+### Requirements
 
-- Node.js 18+ (veya Docker)
-- npm, yarn veya pnpm
-- Docker (opsiyonel)
+- Node.js 18+ (or Docker)
+- npm, yarn, or pnpm
+- Docker (optional)
 
-### Yerel Kurulum
+### Local Installation
 
-1. Projeyi klonlayın:
+1. Clone the repository:
 ```bash
 git clone <repository-url>
 cd afu-coming-soon
 ```
 
-2. Bağımlılıkları yükleyin:
+2. Install dependencies:
 ```bash
 yarn install
-# veya
+# or
 npm install
 ```
 
-3. Geliştirme sunucusunu başlatın:
+3. Start the development server:
 ```bash
 yarn dev
-# veya
+# or
 npm run dev
 ```
 
-4. Tarayıcınızda [http://localhost:3000](http://localhost:3000) adresini açın.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## 🐳 Docker ile Çalıştırma
+## 🐳 Running with Docker
 
-### Docker Compose Kullanımı
+### Using Docker Compose
 
 ```bash
 docker-compose up -d
 ```
 
-Uygulama [http://localhost:8085](http://localhost:8085) adresinde çalışacaktır.
+The application will run at [http://localhost:8085](http://localhost:8085).
 
-### Dockerfile ile Manuel Build
+### Manual Build with Dockerfile
 
 ```bash
 docker build -t afu-coming-soon .
 docker run -p 3000:3000 afu-coming-soon
 ```
 
-## 📂 Proje Yapısı
+## 📂 Project Structure
 
 ```
 afu-coming-soon/
 ├── src/
 │   └── app/
-│       ├── page.tsx          # Ana sayfa komponenti
+│       ├── page.tsx          # Main page component
 │       ├── layout.tsx         # Root layout
-│       ├── globals.css        # Global stiller
-│       └── page.module.css    # Sayfa özel stilleri
+│       ├── globals.css        # Global styles
+│       └── page.module.css    # Page-specific styles
 ├── public/
-│   ├── favicon.js            # Dinamik favicon
+│   ├── favicon.js            # Dynamic favicon
 │   └── favicon.svg           # Favicon SVG
-├── Dockerfile                # Docker build dosyası
-├── docker-compose.yml        # Docker Compose yapılandırması
-├── next.config.ts            # Next.js yapılandırması
-├── tailwind.config.ts        # Tailwind CSS yapılandırması
-├── tsconfig.json             # TypeScript yapılandırması
-└── package.json              # Proje bağımlılıkları
+├── Dockerfile                # Docker build file
+├── docker-compose.yml        # Docker Compose configuration
+├── next.config.ts            # Next.js configuration
+├── tailwind.config.ts        # Tailwind CSS configuration
+├── tsconfig.json             # TypeScript configuration
+└── package.json              # Project dependencies
 ```
 
-## 🎨 Özelleştirme
+## 🎨 Customization
 
-### Alt Başlıkları Değiştirme
+### Changing Subtitles
 
-`src/app/page.tsx` dosyasındaki alt başlıkları düzenleyebilirsiniz:
+You can edit the subtitles in the `src/app/page.tsx` file:
 
 ```typescript
-<h2 className={styles.subTitle} data-text="Yeni Başlık">Yeni Başlık</h2>
+<h2 className={styles.subTitle} data-text="New Title">New Title</h2>
 ```
 
-### Sosyal Medya Linklerini Güncelleme
+### Updating Social Media Links
 
-`src/app/page.tsx` dosyasındaki `handleLinkClick` fonksiyonuna bağlı butonlardaki URL'leri değiştirin:
+Change the URLs in the buttons linked to the `handleLinkClick` function in `src/app/page.tsx`:
 
 ```typescript
 onClick={() => handleLinkClick('https://your-link.com')}
 ```
 
-### Animasyon Hızlarını Ayarlama
+### Adjusting Animation Speeds
 
-`src/app/page.module.css` dosyasındaki animasyon sürelerini değiştirebilirsiniz:
+You can modify animation durations in the `src/app/page.module.css` file:
 
-- `typing` animasyonu: `7s` (satır 160)
-- Alt başlık değişim süresi: `7000ms` (satır 50, page.tsx)
+- `typing` animation: `7s` (line 160)
+- Subtitle change duration: `7000ms` (line 50, page.tsx)
 
 ## 🚢 Production Build
 
@@ -132,71 +128,75 @@ yarn build
 yarn start
 ```
 
-## 📝 Scriptler
+## 📝 Scripts
 
-- `yarn dev`: Geliştirme sunucusunu başlatır (Turbopack ile)
-- `yarn build`: Production build oluşturur
-- `yarn start`: Production sunucusunu başlatır
-- `yarn lint`: ESLint ile kod kalitesini kontrol eder
+- `yarn dev`: Starts the development server (with Turbopack)
+- `yarn build`: Creates a production build
+- `yarn start`: Starts the production server
+- `yarn lint`: Checks code quality with ESLint
 
-## 🔧 Yapılandırma
+## 🔧 Configuration
 
 ### Next.js
 
-Next.js yapılandırması `next.config.ts` dosyasında bulunur. Şu anda varsayılan ayarlar kullanılmaktadır.
+Next.js configuration is located in the `next.config.ts` file. Default settings are currently used.
 
 ### TypeScript
 
-TypeScript yapılandırması `tsconfig.json` dosyasında bulunur. Strict mode aktif ve path alias'lar (`@/*`) yapılandırılmıştır.
+TypeScript configuration is located in the `tsconfig.json` file. Strict mode is enabled and path aliases (`@/*`) are configured.
 
 ### Tailwind CSS
 
-Tailwind CSS yapılandırması `tailwind.config.ts` dosyasında bulunur. CSS değişkenleri ile dark mode desteği vardır.
+Tailwind CSS configuration is located in the `tailwind.config.ts` file. CSS variables with dark mode support are included.
 
 ## 🌐 Deployment
 
-### Vercel (Önerilen)
+### Vercel (Recommended)
 
-1. Vercel hesabınıza giriş yapın
-2. Projeyi import edin
-3. Build komutu: `yarn build`
+1. Log in to your Vercel account
+2. Import the project
+3. Build command: `yarn build`
 4. Output directory: `.next`
-5. Deploy edin
+5. Deploy
 
-### Docker ile Herhangi Bir Platform
+### Docker on Any Platform
 
 ```bash
 docker build -t afu-coming-soon .
 docker push <your-registry>/afu-coming-soon
 ```
 
-## 📄 Lisans
+## 📄 License
 
-Bu proje özel bir projedir.
+This is a private project.
 
-## 👤 Geliştirici
+## 👤 Developer
 
 **Ahmet Faruk Uzunkaya**
 - GitHub: [@MihrimatriX](https://github.com/MihrimatriX)
 - LinkedIn: [Ahmet Furkan Gapil](https://www.linkedin.com/in/ahmet-furkan-gapil/)
 - Email: afurgapil@gmail.com
 
-## 🎯 Özellikler Detayı
+## 🎯 Feature Details
 
-### CRT TV Efekti
-- Ekran cam efekti (glass effect)
-- Scanlines (tarama çizgileri)
-- Noise (gürültü) efekti
-- 3D perspektif
+### CRT TV Effect
+- Screen glass effect
+- Scanlines
+- Noise effect
+- 3D perspective
 
-### Glitch Animasyonları
-- RGB renk kayması
-- Metin glitch efektleri
-- Icon glitch animasyonları
-- Dinamik clip-path kullanımı
+### Glitch Animations
+- RGB color shift
+- Text glitch effects
+- Icon glitch animations
+- Dynamic clip-path usage
 
-### İnteraktif Özellikler
-- Özel cursor tasarımı
-- Hover efektleri
-- Smooth animasyonlar
-- Responsive tasarım
+### Interactive Features
+- Custom cursor design
+- Hover effects
+- Smooth animations
+- Responsive design
+
+---
+
+⭐ If you liked this project, don't forget to give it a star!
