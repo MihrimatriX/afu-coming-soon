@@ -1,5 +1,5 @@
 # Temel imaj olarak Node.js'in resmi imajını kullanıyoruz
-FROM node:18-alpine AS base
+FROM node:lts-trixie-slim AS base
 
 # Çalışma dizinini ayarlıyoruz
 WORKDIR /app

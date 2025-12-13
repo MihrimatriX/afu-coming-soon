@@ -5,6 +5,10 @@ import Script from "next/script";
 export const metadata: Metadata = {
   title: "Ahmet Faruk Uzunkaya",
   description: "Full Stack Developer, Computer Graphics Entusiast",
+  openGraph: {
+    title: "Ahmet Faruk Uzunkaya",
+    description: "Full Stack Developer, Computer Graphics Entusiast",
+  },
 };
 
 export default function RootLayout({
@@ -14,9 +18,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <meta property="og:title" content="Ahmet Faruk Uzunkaya" />
-      </head>
       <body>
         {children}
         <Script

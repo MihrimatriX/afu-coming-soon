@@ -1,0 +1,46 @@
+.customCursor {
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s;
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.5),
+    0 0 20px rgba(255, 255, 255, 0.3),
+    0 0 30px rgba(255, 255, 255, 0.1);
+  animation: cursorPulse 2s infinite;
+}
+
+.customCursor.hover {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  mix-blend-mode: difference;
+}
+
+@keyframes cursorPulse {
+  0% {
+    box-shadow:
+      0 0 10px rgba(255, 255, 255, 0.5),
+      0 0 20px rgba(255, 255, 255, 0.3);
+  }
+
+  50% {
+    box-shadow:
+      0 0 15px rgba(255, 255, 255, 0.7),
+      0 0 25px rgba(255, 255, 255, 0.5),
+      0 0 35px rgba(255, 255, 255, 0.3);
+  }
+
+  100% {
+    box-shadow:
+      0 0 10px rgba(255, 255, 255, 0.5),
+      0 0 20px rgba(255, 255, 255, 0.3);
+  }
+}

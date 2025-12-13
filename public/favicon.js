@@ -59,6 +59,7 @@
       gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
 
       ctx.fillStyle = gradient;
+      F;
       ctx.beginPath();
       ctx.arc(16, 16, 14, 0, Math.PI * 2);
       ctx.fill();

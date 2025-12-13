@@ -1,0 +1,223 @@
+.socialLink {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  letter-spacing: 4px;
+  opacity: 0.9;
+  transition: all 0.3s ease;
+  text-shadow:
+    0 0 5px rgba(255, 255, 255, 0.7),
+    0 0 10px rgba(255, 255, 255, 0.5);
+  position: relative;
+  padding: 5px 10px;
+  animation: text-flicker 0.15s infinite;
+  cursor: none !important;
+  pointer-events: all !important;
+  z-index: 10000;
+  -webkit-user-select: none;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 160px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: inherit;
+}
+
+.socialLink::before,
+.socialLink::after {
+  display: none;
+}
+
+.socialLink:hover {
+  opacity: 1;
+  transform: scale(1.05);
+  animation: text-flicker 0.1s infinite;
+  background: rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.socialLink:hover::before,
+.socialLink:hover::after {
+  display: none;
+}
+
+.socialLink .iconWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.socialLink:hover .iconWrapper::before,
+.socialLink:hover .iconWrapper::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  opacity: 0.8;
+}
+
+.socialLink:hover .iconWrapper::before {
+  left: 2px;
+  filter: drop-shadow(2px 0 #ff0000);
+  animation: glitch-anim-1 0.1s infinite;
+}
+
+.socialLink:hover .iconWrapper::after {
+  left: -2px;
+  filter: drop-shadow(-2px 0 #00ff00);
+  animation: glitch-anim-2 0.1s infinite;
+}
+
+.socialLink:hover .icon {
+  animation:
+    icon-shake 0.1s infinite,
+    icon-rgb-glitch 0.5s infinite;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.9));
+  position: relative;
+  z-index: 3;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  transition: all 0.3s ease;
+  animation: icon-shake 0.2s infinite;
+  position: relative;
+  z-index: 2;
+  text-shadow:
+    0 0 5px rgba(255, 255, 255, 0.7),
+    0 0 10px rgba(255, 255, 255, 0.5);
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.7));
+}
+
+@keyframes icon-shake {
+  0% {
+    transform: translate(0);
+  }
+
+  25% {
+    transform: translate(-1px, 1px);
+  }
+
+  50% {
+    transform: translate(1px, -1px);
+  }
+
+  75% {
+    transform: translate(-1px, -1px);
+  }
+
+  100% {
+    transform: translate(0);
+  }
+}
+
+@keyframes icon-rgb-glitch {
+  0% {
+    filter: drop-shadow(0 0 2px #ff0000);
+  }
+
+  33% {
+    filter: drop-shadow(0 0 2px #00ff00);
+  }
+
+  66% {
+    filter: drop-shadow(0 0 2px #0000ff);
+  }
+
+  100% {
+    filter: drop-shadow(0 0 2px #ff0000);
+  }
+}
+
+@keyframes glitch-anim-1 {
+  0% {
+    clip-path: inset(20% 0 30% 0);
+  }
+
+  20% {
+    clip-path: inset(60% 0 1% 0);
+  }
+
+  40% {
+    clip-path: inset(25% 0 58% 0);
+  }
+
+  60% {
+    clip-path: inset(94% 0 7% 0);
+  }
+
+  80% {
+    clip-path: inset(58% 0 43% 0);
+  }
+
+  100% {
+    clip-path: inset(82% 0 5% 0);
+  }
+}
+
+@keyframes glitch-anim-2 {
+  0% {
+    clip-path: inset(25% 0 58% 0);
+  }
+
+  20% {
+    clip-path: inset(82% 0 5% 0);
+  }
+
+  40% {
+    clip-path: inset(20% 0 30% 0);
+  }
+
+  60% {
+    clip-path: inset(60% 0 1% 0);
+  }
+
+  80% {
+    clip-path: inset(94% 0 7% 0);
+  }
+
+  100% {
+    clip-path: inset(58% 0 43% 0);
+  }
+}
+
+@keyframes text-flicker {
+  0% {
+    opacity: 0.9;
+    text-shadow:
+      0 0 1px rgba(255, 255, 255, 0.7),
+      0 0 3px rgba(255, 255, 255, 0.5);
+  }
+
+  50% {
+    opacity: 1;
+    text-shadow:
+      0 0 3px rgba(255, 255, 255, 0.9),
+      0 0 5px rgba(255, 255, 255, 0.7),
+      0 0 7px rgba(255, 255, 255, 0.5);
+  }
+
+  100% {
+    opacity: 0.9;
+    text-shadow:
+      0 0 2px rgba(255, 255, 255, 0.7),
+      0 0 5px rgba(255, 255, 255, 0.5);
+  }
+}
+
+@media (max-width: 768px) {
+  .socialLink {
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,9 @@
+.subtitleContainer {
+  position: relative;
+  height: 2.5rem;
+  margin-top: 1rem;
+  min-width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
