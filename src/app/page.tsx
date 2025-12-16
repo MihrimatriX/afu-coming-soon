@@ -47,8 +47,9 @@ const Home: FC = () => {
         <ThemeToggle />
         <div className={styles.content}>
           <div className={styles.titleSection}>
-            <Title variant="main">COMING SOON</Title>
-            <SubtitleContainer subtitle="Education. Graphics. Code." />
+            <Title variant="main">PEK YAKINDA</Title>
+            <SubtitleContainer subtitle="Ahmet Faruk Uzunkaya" isName />
+            <SubtitleContainer subtitle="EDUCATION. GRAPHICS. CODE." isTerminal />
           </div>
           <SocialLinks links={SOCIAL_LINKS} onHoverChange={handleHoverChange} />
           <SystemMessage />

@@ -13,7 +13,7 @@ html.dark .glitchWrapper,
 }
 
 .mainTitle {
-  font-size: 6rem;
+  font-size: clamp(2.5rem, 8vw, 9rem);
   font-weight: 800;
   margin: 0;
   line-height: 1.1;
@@ -24,7 +24,21 @@ html.dark .glitchWrapper,
   z-index: 1;
   user-select: none;
   font-family: "Space Grotesk", monospace;
-  white-space: nowrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 768px) {
+  .mainTitle {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 767px) {
+  .mainTitle {
+    white-space: normal;
+    word-break: break-word;
+  }
 }
 
 html.dark .mainTitle,
@@ -61,7 +75,13 @@ html.dark h1.mainTitle,
   display: flex;
   align-items: center;
   justify-content: center;
-  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .mainTitle::before,
+  .mainTitle::after {
+    white-space: nowrap;
+  }
 }
 
 .dark .mainTitle::before,
@@ -226,9 +246,36 @@ html.dark h1.mainTitle,
   }
 }
 
+@media (max-width: 640px) {
+  .mainTitle {
+    font-size: clamp(2rem, 10vw, 4rem);
+    padding: 1rem 1.5rem;
+  }
+  
+  .mainTitle::before,
+  .mainTitle::after {
+    padding: 1rem 1.5rem;
+  }
+  
+  .dark .mainTitle {
+    padding: 1rem 1.5rem;
+  }
+  
+  .dark .mainTitle::before,
+  .dark .mainTitle::after {
+    padding: 1rem 1.5rem;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 767px) {
+  .mainTitle {
+    font-size: clamp(4rem, 12vw, 6rem);
+  }
+}
+
 @media (min-width: 768px) {
   .mainTitle {
-    font-size: 8rem;
+    font-size: clamp(6rem, 10vw, 8rem);
   }
   .subTitle {
     font-size: 1rem;
@@ -237,6 +284,6 @@ html.dark h1.mainTitle,
 
 @media (min-width: 1024px) {
   .mainTitle {
-    font-size: 9rem;
+    font-size: clamp(8rem, 12vw, 9rem);
   }
 }
