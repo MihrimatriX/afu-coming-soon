@@ -44,6 +44,11 @@ export const ScreenEffects: FC = () => {
         aria-hidden="true"
         role="presentation"
       />
+      <div
+        className={styles.crtVignette}
+        aria-hidden="true"
+        role="presentation"
+      />
     </>
   );
 };

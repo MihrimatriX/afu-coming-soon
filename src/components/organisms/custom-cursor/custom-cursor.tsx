@@ -1,192 +1,160 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, type FC } from "react";
+import React, { useEffect, useState, useRef, type FC } from "react";
 import { useCursorPosition } from "@/hooks/use-cursor-position";
 import styles from "./custom-cursor.module.css";
 
-interface CustomCursorProps {
-  isHovered?: boolean;
-}
-
-interface TrailPoint {
+interface ConfettiParticle {
+  id: number;
   x: number;
   y: number;
-  id: number;
-  size: number;
-}
-
-interface Particle {
-  x: number;
-  y: number;
-  id: number;
   angle: number;
-  distance: number;
+  velocity: number;
   size: number;
 }
 
-export const CustomCursor: FC<CustomCursorProps> = ({ isHovered = false }) => {
+export const CustomCursor: FC = () => {
   const cursorPos = useCursorPosition();
-  const [trail, setTrail] = useState<Array<TrailPoint>>([]);
-  const [particles, setParticles] = useState<Array<Particle>>([]);
   const [isHovering, setIsHovering] = useState(false);
-  const [velocity, setVelocity] = useState({ x: 0, y: 0 });
-  const [prevPos, setPrevPos] = useState({ x: 0, y: 0 });
-  const [clickEffect, setClickEffect] = useState<Array<{ x: number; y: number; id: number }>>([]);
+  const [showContextMessage, setShowContextMessage] = useState(false);
+  const [confetti, setConfetti] = useState<ConfettiParticle[]>([]);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const animationFrameRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (cursorRef.current) {
+      cursorRef.current.style.left = `${cursorPos.x}px`;
+      cursorRef.current.style.top = `${cursorPos.y}px`;
+    }
+  }, [cursorPos.x, cursorPos.y]);
 
   useEffect(() => {
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (
+      setIsHovering(
         target.tagName === "BUTTON" ||
         target.tagName === "A" ||
-        target.closest("button") ||
-        target.closest("a") ||
-        target.style.cursor === "pointer" ||
+        !!target.closest("button, a") ||
         window.getComputedStyle(target).cursor === "pointer"
-      ) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
-      }
-    };
-
-    const handleMouseOut = () => {
-      setIsHovering(false);
-    };
-
-    const handleClick = (e: MouseEvent) => {
-      setClickEffect((prev) => [
-        ...prev,
-        { x: e.clientX, y: e.clientY, id: Date.now() },
-      ]);
-      setTimeout(() => {
-        setClickEffect((prev) => prev.slice(1));
-      }, 600);
+      );
     };
 
     window.addEventListener("mouseover", handleMouseOver, { passive: true });
-    window.addEventListener("mouseout", handleMouseOut, { passive: true });
-    window.addEventListener("click", handleClick, { passive: true });
-
+    window.addEventListener("mouseout", () => setIsHovering(false), { passive: true });
     return () => {
       window.removeEventListener("mouseover", handleMouseOver);
-      window.removeEventListener("mouseout", handleMouseOut);
-      window.removeEventListener("click", handleClick);
+      window.removeEventListener("mouseout", () => setIsHovering(false));
     };
   }, []);
 
   useEffect(() => {
-    const deltaX = cursorPos.x - prevPos.x;
-    const deltaY = cursorPos.y - prevPos.y;
-    const speed = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    let messageTimeout: NodeJS.Timeout | null = null;
     
-    setVelocity({ x: deltaX, y: deltaY });
-    setPrevPos({ x: cursorPos.x, y: cursorPos.y });
-
-    const timeoutId = setTimeout(() => {
-      setTrail((prevTrail) => {
-        const size = Math.min(1 + speed * 0.01, 1.5);
-        const newTrail = [
-          ...prevTrail,
-          { x: cursorPos.x, y: cursorPos.y, id: Date.now(), size },
-        ];
-        if (newTrail.length > 12) {
-          return newTrail.slice(1);
+    const handleContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+      
+      // Önceki animasyonu temizle
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+      if (messageTimeout) {
+        clearTimeout(messageTimeout);
+      }
+      
+      // Konfeti oluştur
+      const particles: ConfettiParticle[] = [];
+      for (let i = 0; i < 30; i++) {
+        particles.push({
+          id: Date.now() + i,
+          x: e.clientX,
+          y: e.clientY,
+          angle: (Math.PI * 2 * i) / 30 + Math.random() * 0.5,
+          velocity: 2 + Math.random() * 3,
+          size: 4 + Math.random() * 6,
+        });
+      }
+      setConfetti(particles);
+      setShowContextMessage(true);
+      
+      // Konfeti animasyonu
+      const startTime = Date.now();
+      const animate = () => {
+        const elapsed = Date.now() - startTime;
+        if (elapsed < 2000) {
+          setConfetti((prev) => {
+            if (prev.length === 0) return prev;
+            return prev
+              .map((p) => ({
+                ...p,
+                x: p.x + Math.cos(p.angle) * p.velocity * 2,
+                y: p.y + Math.sin(p.angle) * p.velocity * 2 + elapsed * 0.05,
+                velocity: p.velocity * 0.98,
+              }))
+              .filter((p) => p.velocity > 0.1);
+          });
+          animationFrameRef.current = requestAnimationFrame(animate);
+        } else {
+          setConfetti([]);
+          animationFrameRef.current = null;
         }
-        return newTrail;
-      });
-    }, 8);
+      };
+      animationFrameRef.current = requestAnimationFrame(animate);
+      
+      messageTimeout = setTimeout(() => {
+        setShowContextMessage(false);
+        messageTimeout = null;
+      }, 4000);
+    };
 
-    return () => clearTimeout(timeoutId);
-  }, [cursorPos.x, cursorPos.y, prevPos]);
-
-  useEffect(() => {
-    const particleCount = isHovering ? 8 : 4;
-    const newParticles: Particle[] = [];
-    
-    for (let i = 0; i < particleCount; i++) {
-      const angle = (360 / particleCount) * i;
-      const distance = isHovering ? 20 : 15;
-      newParticles.push({
-        x: cursorPos.x,
-        y: cursorPos.y,
-        id: Date.now() + i,
-        angle,
-        distance,
-        size: Math.random() * 3 + 2,
-      });
-    }
-    
-    setParticles(newParticles);
-  }, [cursorPos.x, cursorPos.y, isHovering]);
-
-  const className = `${styles.customCursor} ${
-    isHovered || isHovering ? styles.hover : ""
-  } ${styles.light}`.trim();
+    window.addEventListener("contextmenu", handleContextMenu, { passive: false });
+    return () => {
+      window.removeEventListener("contextmenu", handleContextMenu);
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+      if (messageTimeout) {
+        clearTimeout(messageTimeout);
+      }
+    };
+  }, []);
 
   return (
     <>
-      {trail.map((point, index) => (
+      {confetti.map((particle) => (
         <div
-          key={point.id}
-          className={`${styles.trail} ${styles.light}`}
+          key={particle.id}
+          className={styles.confettiParticle}
           style={{
-            left: `${point.x}px`,
-            top: `${point.y}px`,
-            opacity: (index + 1) / trail.length * 0.4,
-            transform: `translate(-50%, -50%) scale(${point.size * (index + 1) / trail.length})`,
-            width: `${8 + index * 2}px`,
-            height: `${8 + index * 2}px`,
-          }}
-          aria-hidden="true"
-        />
-      ))}
-      {particles.map((particle) => {
-        const radian = (particle.angle * Math.PI) / 180;
-        const x = particle.x + Math.cos(radian) * particle.distance;
-        const y = particle.y + Math.sin(radian) * particle.distance;
-        return (
-          <div
-            key={particle.id}
-            className={styles.particle}
-            style={{
-              left: `${x}px`,
-              top: `${y}px`,
-              width: `${particle.size}px`,
-              height: `${particle.size}px`,
-            }}
-            aria-hidden="true"
-          />
-        );
-      })}
-      {clickEffect.map((effect) => (
-        <div
-          key={effect.id}
-          className={styles.clickRipple}
-          style={{
-            left: `${effect.x}px`,
-            top: `${effect.y}px`,
+            left: `${particle.x}px`,
+            top: `${particle.y}px`,
+            width: `${particle.size}px`,
+            height: `${particle.size}px`,
           }}
           aria-hidden="true"
         />
       ))}
       <div
-        className={className}
-        style={{
-          left: `${cursorPos.x}px`,
-          top: `${cursorPos.y}px`,
-        }}
+        ref={cursorRef}
+        className={`${styles.customCursor} ${isHovering ? styles.hover : ""} ${styles.light}`}
         aria-hidden="true"
-        role="presentation"
       >
-        <div className={styles.cursorAura} />
         <div className={styles.cursorInner}>
           <div className={styles.cursorDot} />
-          <div className={styles.cursorCrosshair} />
         </div>
-        <div className={styles.cursorGlow} />
-        <div className={styles.cursorRing} />
       </div>
+      {showContextMessage && (
+        <div
+          className={styles.contextMessage}
+          style={{
+            left: `${cursorPos.x}px`,
+            top: `${cursorPos.y + 30}px`,
+          }}
+        >
+          <span>Burayı geliştirmek için uğraşıyorum umarım kafamdaki gibi olur</span>
+        </div>
+      )}
     </>
   );
 };
