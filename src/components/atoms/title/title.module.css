@@ -5,13 +5,6 @@
   -webkit-filter: none !important;
 }
 
-html.dark .glitchWrapper,
-.dark .glitchWrapper {
-  filter: none !important;
-  -webkit-filter: none !important;
-  text-shadow: none !important;
-}
-
 .mainTitle {
   font-size: clamp(2.5rem, 8vw, 9rem);
   font-weight: 800;
@@ -41,25 +34,6 @@ html.dark .glitchWrapper,
   }
 }
 
-html.dark .mainTitle,
-.dark .mainTitle,
-html.dark h1.mainTitle,
-.dark h1.mainTitle {
-  color: #ffffff !important;
-  background: transparent;
-  padding: 1.5rem 2.5rem;
-  display: inline-block;
-  text-shadow: 
-    0 0 20px rgba(255, 255, 255, 0.8),
-    0 0 15px rgba(255, 255, 255, 0.6),
-    0 0 10px rgba(255, 255, 255, 0.4),
-    0 0 5px rgba(255, 255, 255, 0.3) !important;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
-  filter: brightness(1.2) blur(0) !important;
-  -webkit-filter: brightness(1.2) blur(0) !important;
-  -webkit-text-fill-color: #ffffff !important;
-  isolation: isolate;
-}
 
 .mainTitle::before,
 .mainTitle::after {
@@ -84,12 +58,6 @@ html.dark h1.mainTitle,
   }
 }
 
-.dark .mainTitle::before,
-.dark .mainTitle::after {
-  background: transparent;
-  padding: 1.5rem 2.5rem;
-  color: #ffffff;
-}
 
 .mainTitle::before {
   left: 2px;
@@ -102,12 +70,6 @@ html.dark h1.mainTitle,
   z-index: -1;
 }
 
-.dark .mainTitle::before {
-  text-shadow: 
-    -2px 0 rgba(255, 255, 255, 0.8),
-    2px 0 rgba(200, 200, 255, 0.8);
-  opacity: 0.9;
-}
 
 .mainTitle::after {
   left: -2px;
@@ -120,12 +82,6 @@ html.dark h1.mainTitle,
   z-index: -1;
 }
 
-.dark .mainTitle::after {
-  text-shadow: 
-    2px 0 rgba(255, 255, 255, 0.8),
-    -2px 0 rgba(200, 200, 255, 0.8);
-  opacity: 0.9;
-}
 
 .subTitle {
   font-size: 0.875rem;
@@ -140,11 +96,6 @@ html.dark h1.mainTitle,
   z-index: 10;
 }
 
-.dark .subTitle {
-  color: #ffffff;
-  font-family: "Courier New", "Consolas", "Monaco", monospace;
-  font-weight: 500;
-}
 
 .subTitlePrefix {
   color: #22c55e;
@@ -257,14 +208,6 @@ html.dark h1.mainTitle,
     padding: 1rem 1.5rem;
   }
   
-  .dark .mainTitle {
-    padding: 1rem 1.5rem;
-  }
-  
-  .dark .mainTitle::before,
-  .dark .mainTitle::after {
-    padding: 1rem 1.5rem;
-  }
 }
 
 @media (min-width: 640px) and (max-width: 767px) {

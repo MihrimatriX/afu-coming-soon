@@ -5,7 +5,6 @@ import { Title } from "@/components/atoms/title";
 import { SubtitleContainer } from "@/components/organisms/subtitle-container";
 import { SocialLinks } from "@/components/organisms/social-links";
 import { ScreenEffects } from "@/components/organisms/screen-effects";
-import { ThemeToggle } from "@/components/organisms/theme-toggle";
 import { SystemMessage } from "@/components/organisms/system-message";
 import { CustomCursor } from "@/components/organisms/custom-cursor";
 import styles from "./page.module.css";
@@ -44,7 +43,6 @@ const Home: FC = () => {
       <ScreenEffects />
       <CustomCursor />
       <main className={styles.main}>
-        <ThemeToggle />
         <div className={styles.content}>
           <div className={styles.titleSection}>
             <Title variant="main">PEK YAKINDA</Title>

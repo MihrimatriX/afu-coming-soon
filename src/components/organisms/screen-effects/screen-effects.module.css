@@ -1,3 +1,15 @@
+.screenFlicker {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100;
+  animation: crt-flicker 0.15s infinite;
+  mix-blend-mode: overlay;
+}
+
 .scanlines {
   position: fixed;
   top: 0;
@@ -7,21 +19,13 @@
   background: linear-gradient(to bottom,
       rgba(255, 255, 255, 0) 0%,
       rgba(255, 255, 255, 0) 50%,
-      rgba(0, 0, 0, 0.2) 50%,
-      rgba(0, 0, 0, 0.2) 100%);
+      rgba(0, 0, 0, 0.25) 50%,
+      rgba(0, 0, 0, 0.25) 100%);
   background-size: 100% 3px;
   pointer-events: none;
   z-index: 50;
   animation: scanline-move 8s linear infinite;
-}
-
-.dark .scanlines {
-  background: linear-gradient(to bottom,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0) 50%,
-      rgba(0, 0, 0, 0.7) 50%,
-      rgba(0, 0, 0, 0.7) 100%);
-  background-size: 100% 4px;
+  mix-blend-mode: multiply;
 }
 
 @keyframes scanline-move {
@@ -42,17 +46,11 @@
   height: 100%;
   z-index: 40;
   pointer-events: none;
-  box-shadow: inset 0 0 6rem rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 0 8rem rgba(0, 0, 0, 0.5);
   background: radial-gradient(circle,
       rgba(18, 16, 16, 0) 60%,
-      rgba(0, 0, 0, 0.2) 100%);
-}
-
-.dark .crtOverlay {
-  box-shadow: inset 0 0 12rem rgba(26, 26, 26, 0.8);
-  background: radial-gradient(circle,
-      rgba(26, 26, 26, 0) 40%,
-      rgba(20, 20, 20, 0.6) 100%);
+      rgba(0, 0, 0, 0.3) 100%);
+  mix-blend-mode: multiply;
 }
 
 .radialGradient {
@@ -62,109 +60,272 @@
   z-index: 0;
   background: radial-gradient(circle at center,
       transparent 0%,
-      rgba(0, 0, 0, 0.05) 100%);
+      rgba(0, 0, 0, 0.08) 100%);
 }
 
-.dark .radialGradient {
-  background: radial-gradient(circle at center,
-      transparent 0%,
-      rgba(20, 20, 20, 0.7) 100%);
+.screenNoise {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.03;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.1),
+      rgba(0, 0, 0, 0.1) 1px,
+      transparent 1px,
+      transparent 2px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.1),
+      rgba(0, 0, 0, 0.1) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+  background-size: 4px 4px;
+  animation: noise 0.5s steps(8) infinite;
+  mix-blend-mode: overlay;
 }
 
-.screenFlicker {
-  animation: crt-flicker 0.15s infinite;
-}
-
-@keyframes crt-flicker {
+@keyframes noise {
   0% {
-    opacity: 0.98;
+    transform: translate(0, 0);
   }
-
-  5% {
-    opacity: 0.96;
-  }
-
   10% {
-    opacity: 0.98;
+    transform: translate(-2%, -1%);
   }
-
-  15% {
-    opacity: 0.99;
-  }
-
   20% {
-    opacity: 0.97;
+    transform: translate(1%, 2%);
   }
-
-  25% {
-    opacity: 0.98;
-  }
-
   30% {
-    opacity: 0.99;
+    transform: translate(-1%, 1%);
   }
-
-  35% {
-    opacity: 0.97;
-  }
-
   40% {
-    opacity: 0.98;
+    transform: translate(2%, -2%);
   }
-
-  45% {
-    opacity: 0.96;
-  }
-
   50% {
-    opacity: 0.99;
+    transform: translate(-2%, 2%);
   }
-
-  55% {
-    opacity: 0.94;
-  }
-
   60% {
-    opacity: 0.98;
+    transform: translate(1%, -1%);
   }
-
-  65% {
-    opacity: 0.96;
-  }
-
   70% {
-    opacity: 1;
+    transform: translate(-1%, -2%);
   }
-
-  75% {
-    opacity: 0.98;
-  }
-
   80% {
-    opacity: 0.95;
+    transform: translate(2%, 1%);
   }
-
-  85% {
-    opacity: 0.96;
-  }
-
   90% {
-    opacity: 0.97;
+    transform: translate(-2%, -1%);
   }
-
-  95% {
-    opacity: 0.99;
-  }
-
   100% {
-    opacity: 0.96;
+    transform: translate(0, 0);
   }
 }
 
 .chromaticAberration {
-  text-shadow: 1.5px 0 rgba(255, 0, 0, 0.3), -1.5px 0 rgba(0, 0, 255, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 45;
+  background: 
+    linear-gradient(to right, rgba(255, 0, 0, 0.02) 0%, transparent 50%),
+    linear-gradient(to left, rgba(0, 0, 255, 0.02) 0%, transparent 50%);
+  mix-blend-mode: screen;
+  animation: chromatic-shift 3s ease-in-out infinite;
 }
 
-.phosphorGlow {
-  filter: blur(0.3px);
+@keyframes chromatic-shift {
+  0%, 100% {
+    transform: translateX(0);
+    filter: hue-rotate(0deg);
+  }
+  25% {
+    transform: translateX(1px);
+    filter: hue-rotate(5deg);
+  }
+  50% {
+    transform: translateX(0);
+    filter: hue-rotate(0deg);
+  }
+  75% {
+    transform: translateX(-1px);
+    filter: hue-rotate(-5deg);
+  }
+}
+
+.colorBleeding {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 35;
+  background: 
+    radial-gradient(ellipse at top, rgba(255, 0, 0, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom, rgba(0, 0, 255, 0.03) 0%, transparent 50%);
+  mix-blend-mode: screen;
+  animation: color-bleed 4s ease-in-out infinite;
+}
+
+@keyframes color-bleed {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.horizontalDistortion {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 55;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  animation: horizontal-distort 2s ease-in-out infinite;
+  mix-blend-mode: multiply;
+}
+
+@keyframes horizontal-distort {
+  0%, 100% {
+    transform: translateY(0) scaleY(1);
+  }
+  25% {
+    transform: translateY(-0.5px) scaleY(1.001);
+  }
+  50% {
+    transform: translateY(0) scaleY(1);
+  }
+  75% {
+    transform: translateY(0.5px) scaleY(0.999);
+  }
+}
+
+
+@keyframes crt-flicker {
+  0% {
+    opacity: 0.98;
+    filter: brightness(1);
+  }
+
+  5% {
+    opacity: 0.96;
+    filter: brightness(0.98);
+  }
+
+  10% {
+    opacity: 0.98;
+    filter: brightness(1);
+  }
+
+  15% {
+    opacity: 0.99;
+    filter: brightness(1.01);
+  }
+
+  20% {
+    opacity: 0.97;
+    filter: brightness(0.97);
+  }
+
+  25% {
+    opacity: 0.98;
+    filter: brightness(1);
+  }
+
+  30% {
+    opacity: 0.99;
+    filter: brightness(1.02);
+  }
+
+  35% {
+    opacity: 0.97;
+    filter: brightness(0.98);
+  }
+
+  40% {
+    opacity: 0.98;
+    filter: brightness(1);
+  }
+
+  45% {
+    opacity: 0.96;
+    filter: brightness(0.96);
+  }
+
+  50% {
+    opacity: 0.99;
+    filter: brightness(1.01);
+  }
+
+  55% {
+    opacity: 0.94;
+    filter: brightness(0.94);
+  }
+
+  60% {
+    opacity: 0.98;
+    filter: brightness(1);
+  }
+
+  65% {
+    opacity: 0.96;
+    filter: brightness(0.97);
+  }
+
+  70% {
+    opacity: 1;
+    filter: brightness(1.03);
+  }
+
+  75% {
+    opacity: 0.98;
+    filter: brightness(1);
+  }
+
+  80% {
+    opacity: 0.95;
+    filter: brightness(0.95);
+  }
+
+  85% {
+    opacity: 0.96;
+    filter: brightness(0.98);
+  }
+
+  90% {
+    opacity: 0.97;
+    filter: brightness(1);
+  }
+
+  95% {
+    opacity: 0.99;
+    filter: brightness(1.01);
+  }
+
+  100% {
+    opacity: 0.96;
+    filter: brightness(0.97);
+  }
 }

@@ -23,9 +23,6 @@
   font-family: "Courier New", "Consolas", "Monaco", monospace;
 }
 
-.dark .text {
-  color: #9ca3af;
-}
 
 .cursor {
   animation: pulse 1s infinite;

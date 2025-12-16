@@ -17,10 +17,6 @@
   overflow: hidden;
 }
 
-.dark .socialLink {
-  background: #151515 !important;
-  border-color: #252525;
-}
 
 .socialLink::before,
 .socialLink::after {
@@ -45,9 +41,6 @@
   animation: glitch-button 0.3s infinite linear alternate-reverse;
 }
 
-.dark .socialLink:hover {
-  border-color: #22c55e;
-}
 
 .socialLink:hover::before {
   left: 2px;
@@ -122,9 +115,6 @@
   z-index: 2;
 }
 
-.dark .label {
-  color: #e5e7eb;
-}
 
 @keyframes glitch-button {
   0% {
