@@ -2,6 +2,7 @@ version: '3'
 
 services:
   afu-coming-soon:
+    container_name: afu-coming-soon
     build:
       context: .
       dockerfile: Dockerfile
