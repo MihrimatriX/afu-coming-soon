@@ -3,7 +3,7 @@ import { SocialLink } from "@/components/molecules/social-link";
 import styles from "./social-links.module.css";
 
 interface SocialLinkData {
-  icon: "github" | "linkedin" | "email";
+  icon: "github" | "linkedin" | "email" | "home";
   label: string;
   url: string;
 }

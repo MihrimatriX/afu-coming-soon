@@ -1,0 +1,32 @@
+.systemMessage {
+  margin-top: 4rem;
+  text-align: center;
+  opacity: 0.6;
+}
+
+.text {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-family: "Courier New", "Consolas", "Monaco", monospace;
+}
+
+.dark .text {
+  color: #9ca3af;
+}
+
+.cursor {
+  animation: pulse 1s infinite;
+  color: #22c55e;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}

@@ -1,21 +1,21 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import type { FC } from "react";
+import React, { useCallback, type FC } from "react";
 import { Title } from "@/components/atoms/title";
 import { SubtitleContainer } from "@/components/organisms/subtitle-container";
 import { SocialLinks } from "@/components/organisms/social-links";
 import { ScreenEffects } from "@/components/organisms/screen-effects";
+import { ThemeToggle } from "@/components/organisms/theme-toggle";
+import { SystemMessage } from "@/components/organisms/system-message";
 import { CustomCursor } from "@/components/organisms/custom-cursor";
 import styles from "./page.module.css";
 
-const SUBTITLES = [
-  { text: "Computer Graphics..." },
-  { text: "Geek Konular..." },
-  { text: "Birşeyler Buluruz..." },
-];
-
 const SOCIAL_LINKS = [
+  {
+    icon: "home" as const,
+    label: "ANASAYFA",
+    url: "https://ahmetfuzunkaya.com",
+  },
   {
     icon: "github" as const,
     label: "GITHUB",
@@ -24,34 +24,37 @@ const SOCIAL_LINKS = [
   {
     icon: "linkedin" as const,
     label: "LINKEDIN",
-    url: "https://www.linkedin.com/in/ahmet-furkan-gapil/",
+    url: "https://www.linkedin.com/in/ahmet-fuzunkaya/",
   },
   {
     icon: "email" as const,
     label: "EMAIL",
-    url: "mailto:afurgapil@gmail.com",
+    url: "mailto:ahmet.fuzunkaya@gmail.com",
   },
 ];
 
 const Home: FC = () => {
-  const [isHovered, setIsHovered] = useState(false);
-
   const handleHoverChange = useCallback((hovered: boolean) => {
-    setIsHovered(hovered);
+    // Hover state can be used for future enhancements
+    console.debug("Hover state:", hovered);
   }, []);
 
   return (
-    <main className={styles.main}>
-      <div className={styles.screen}>
-        <ScreenEffects />
+    <>
+      <ScreenEffects />
+      <CustomCursor />
+      <main className={styles.main}>
+        <ThemeToggle />
         <div className={styles.content}>
-          <Title variant="main">PEK YAKINDA</Title>
-          <SubtitleContainer subtitles={SUBTITLES} />
+          <div className={styles.titleSection}>
+            <Title variant="main">COMING SOON</Title>
+            <SubtitleContainer subtitle="Education. Graphics. Code." />
+          </div>
           <SocialLinks links={SOCIAL_LINKS} onHoverChange={handleHoverChange} />
+          <SystemMessage />
         </div>
-      </div>
-      <CustomCursor isHovered={isHovered} />
-    </main>
+      </main>
+    </>
   );
 };
 

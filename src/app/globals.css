@@ -3,19 +3,130 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
+  --background-light: #f3f4f6;
+  --background-dark: #1a1a1a;
+  --primary: #22c55e;
   --foreground: #171717;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #1a1a1a;
     --foreground: #ededed;
   }
 }
 
 body {
   color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background-light);
+  font-family: var(--font-space-grotesk), sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  overflow: hidden;
+  cursor: none;
+}
+
+* {
+  cursor: none !important;
+}
+
+.dark body {
+  background: var(--background-dark);
+  color: var(--foreground);
+  animation: crt-flicker 0.15s infinite;
+  text-shadow: 1.5px 0 rgba(255, 0, 0, 0.3), -1.5px 0 rgba(0, 0, 255, 0.3);
+  filter: blur(0.3px);
+}
+
+.dark body h1,
+.dark body h2,
+.dark body h3 {
+  filter: none !important;
+  -webkit-filter: none !important;
+}
+
+@keyframes crt-flicker {
+  0% {
+    opacity: 0.98;
+  }
+
+  5% {
+    opacity: 0.96;
+  }
+
+  10% {
+    opacity: 0.98;
+  }
+
+  15% {
+    opacity: 0.99;
+  }
+
+  20% {
+    opacity: 0.97;
+  }
+
+  25% {
+    opacity: 0.98;
+  }
+
+  30% {
+    opacity: 0.99;
+  }
+
+  35% {
+    opacity: 0.97;
+  }
+
+  40% {
+    opacity: 0.98;
+  }
+
+  45% {
+    opacity: 0.96;
+  }
+
+  50% {
+    opacity: 0.99;
+  }
+
+  55% {
+    opacity: 0.94;
+  }
+
+  60% {
+    opacity: 0.98;
+  }
+
+  65% {
+    opacity: 0.96;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 0.98;
+  }
+
+  80% {
+    opacity: 0.95;
+  }
+
+  85% {
+    opacity: 0.96;
+  }
+
+  90% {
+    opacity: 0.97;
+  }
+
+  95% {
+    opacity: 0.99;
+  }
+
+  100% {
+    opacity: 0.96;
+  }
 }

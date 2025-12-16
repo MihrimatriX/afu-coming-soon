@@ -1,39 +1,35 @@
 .main {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   min-height: 100vh;
-  background-color: #000000;
-  padding: 0;
+  width: 100%;
+  max-width: 64rem;
+  padding: 1rem;
   position: relative;
+  z-index: 20;
   overflow: hidden;
-  cursor: none !important;
-}
-
-.screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #000;
-  overflow: hidden;
-  transform-style: preserve-3d;
-  perspective: 1000px;
-  box-shadow:
-    inset 0 0 200px rgba(255, 255, 255, 0.205),
-    0 0 100px rgb(0, 0, 0);
-  transition: all 0.4s ease;
+  margin: 0 auto;
 }
 
 .content {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  padding: 20px;
-  pointer-events: all;
+  text-align: center;
+  position: relative;
+  z-index: 20;
+}
+
+.titleSection {
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .titleSection {
+    margin-bottom: 5rem;
+  }
 }

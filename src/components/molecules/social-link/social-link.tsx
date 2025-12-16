@@ -1,9 +1,8 @@
 import React, { ButtonHTMLAttributes, useCallback, type FC } from "react";
-import { Icon } from "@/components/atoms/icon";
 import styles from "./social-link.module.css";
 
 interface SocialLinkProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  icon: "github" | "linkedin" | "email";
+  icon: "github" | "linkedin" | "email" | "home";
   label: string;
   url: string;
   onHoverChange?: (isHovered: boolean) => void;
@@ -20,7 +19,13 @@ export const SocialLink: FC<SocialLinkProps> = ({
 }: SocialLinkProps) => {
   const handleClick = useCallback(() => {
     if (typeof window !== "undefined") {
-      window.open(url, "_blank", "noopener,noreferrer");
+      if (url.startsWith("mailto:")) {
+        window.location.href = url;
+      } else if (url.startsWith("http")) {
+        window.open(url, "_blank", "noopener,noreferrer");
+      } else {
+        window.location.href = url;
+      }
     }
   }, [url]);
 
@@ -32,6 +37,21 @@ export const SocialLink: FC<SocialLinkProps> = ({
     onHoverChange?.(false);
   }, [onHoverChange]);
 
+  const getIconClass = () => {
+    switch (icon) {
+      case "github":
+        return "fab fa-github";
+      case "linkedin":
+        return "fab fa-linkedin";
+      case "email":
+        return "fas fa-envelope";
+      case "home":
+        return "fas fa-home";
+      default:
+        return "";
+    }
+  };
+
   return (
     <button
       type="button"
@@ -39,14 +59,14 @@ export const SocialLink: FC<SocialLinkProps> = ({
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      data-text={label}
       aria-label={label}
       {...props}
     >
       <div className={styles.iconWrapper}>
-        <Icon name={icon} className={styles.icon} />
+        <i className={`${getIconClass()} ${styles.icon}`} aria-hidden="true" />
       </div>
-      {label}
+      <span className={styles.label}>{label}</span>
+      <div className={styles.hoverOverlay} />
     </button>
   );
 };
