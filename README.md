@@ -166,17 +166,6 @@ docker build -t afu-coming-soon .
 docker push <your-registry>/afu-coming-soon
 ```
 
-## 📄 License
-
-This is a private project.
-
-## 👤 Developer
-
-**Ahmet Faruk Uzunkaya**
-- GitHub: [@MihrimatriX](https://github.com/MihrimatriX)
-- LinkedIn: [Ahmet Furkan Gapil](https://www.linkedin.com/in/ahmet-furkan-gapil/)
-- Email: afurgapil@gmail.com
-
 ## 🎯 Feature Details
 
 ### CRT TV Effect
