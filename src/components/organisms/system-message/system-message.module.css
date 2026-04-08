@@ -1,0 +1,42 @@
+.systemMessage {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  text-align: center;
+  opacity: 0.6;
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+  min-height: 2rem;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .systemMessage {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+  }
+}
+
+.text {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-family: "Courier New", "Consolas", "Monaco", monospace;
+}
+
+
+.cursor {
+  animation: pulse 1s infinite;
+  color: #22c55e;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}

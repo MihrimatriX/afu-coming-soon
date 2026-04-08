@@ -1,0 +1,220 @@
+.socialLink {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  width: 100%;
+  backdrop-filter: blur(4px);
+  font-family: "Courier New", "Consolas", "Monaco", monospace;
+  overflow: hidden;
+}
+
+
+.socialLink::before,
+.socialLink::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.socialLink:hover {
+  border-color: #22c55e;
+  box-shadow:
+    0 0 15px rgba(34, 197, 94, 0.3),
+    0 0 30px rgba(34, 197, 94, 0.15),
+    inset 0 0 20px rgba(34, 197, 94, 0.1);
+  transform: translateY(-2px);
+  animation: glitch-button 0.3s infinite linear alternate-reverse;
+}
+
+
+.socialLink:hover::before {
+  left: 2px;
+  text-shadow: -1px 0 #00ff00;
+  opacity: 0.7;
+  animation: glitch-button-1 0.2s infinite linear alternate-reverse;
+  z-index: 1;
+}
+
+.socialLink:hover::after {
+  left: -2px;
+  text-shadow: 1px 0 #ff00ff;
+  opacity: 0.7;
+  animation: glitch-button-2 0.2s infinite linear alternate-reverse;
+  z-index: 1;
+}
+
+.socialLink:hover .icon,
+.socialLink:hover .label {
+  color: #22c55e;
+  text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+  position: relative;
+  z-index: 2;
+}
+
+.hoverOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(34, 197, 94, 0.05);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 0.5rem;
+  pointer-events: none;
+}
+
+.socialLink:hover .hoverOverlay {
+  opacity: 1;
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.icon {
+  font-size: 1.5rem;
+  color: #1f2937;
+  transition: all 0.3s ease;
+}
+
+.dark .icon {
+  color: #e5e7eb;
+}
+
+.socialLink:hover .icon {
+  animation: icon-glitch 0.2s infinite linear alternate-reverse;
+}
+
+.label {
+  color: #1f2937;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  font-family: "Courier New", "Consolas", "Monaco", monospace;
+  position: relative;
+  z-index: 2;
+}
+
+
+@keyframes glitch-button {
+  0% {
+    transform: translateY(-2px) translate(0);
+  }
+
+  25% {
+    transform: translateY(-2px) translate(-1px, 1px);
+  }
+
+  50% {
+    transform: translateY(-2px) translate(1px, -1px);
+  }
+
+  75% {
+    transform: translateY(-2px) translate(-1px, -1px);
+  }
+
+  100% {
+    transform: translateY(-2px) translate(1px, 1px);
+  }
+}
+
+@keyframes glitch-button-1 {
+  0% {
+    clip-path: inset(20% 0 80% 0);
+    transform: translate(-1px, 1px);
+  }
+
+  25% {
+    clip-path: inset(10% 0 60% 0);
+    transform: translate(1px, -1px);
+  }
+
+  50% {
+    clip-path: inset(50% 0 20% 0);
+    transform: translate(-1px, -1px);
+  }
+
+  75% {
+    clip-path: inset(30% 0 70% 0);
+    transform: translate(1px, 1px);
+  }
+
+  100% {
+    clip-path: inset(80% 0 10% 0);
+    transform: translate(-1px, 1px);
+  }
+}
+
+@keyframes glitch-button-2 {
+  0% {
+    clip-path: inset(80% 0 10% 0);
+    transform: translate(1px, -1px);
+  }
+
+  25% {
+    clip-path: inset(30% 0 70% 0);
+    transform: translate(-1px, 1px);
+  }
+
+  50% {
+    clip-path: inset(10% 0 60% 0);
+    transform: translate(1px, 1px);
+  }
+
+  75% {
+    clip-path: inset(50% 0 20% 0);
+    transform: translate(-1px, -1px);
+  }
+
+  100% {
+    clip-path: inset(20% 0 80% 0);
+    transform: translate(1px, -1px);
+  }
+}
+
+@keyframes icon-glitch {
+  0% {
+    transform: translate(0) scale(1);
+    filter: drop-shadow(0 0 5px rgba(34, 197, 94, 0.5));
+  }
+
+  25% {
+    transform: translate(-1px, 1px) scale(1.05);
+    filter: drop-shadow(-2px 0 #00ff00) drop-shadow(0 0 8px rgba(34, 197, 94, 0.7));
+  }
+
+  50% {
+    transform: translate(1px, -1px) scale(1.05);
+    filter: drop-shadow(2px 0 #ff00ff) drop-shadow(0 0 8px rgba(34, 197, 94, 0.7));
+  }
+
+  75% {
+    transform: translate(-1px, -1px) scale(1.05);
+    filter: drop-shadow(-1px 0 #00ff00) drop-shadow(0 0 8px rgba(34, 197, 94, 0.7));
+  }
+
+  100% {
+    transform: translate(1px, 1px) scale(1.05);
+    filter: drop-shadow(1px 0 #ff00ff) drop-shadow(0 0 8px rgba(34, 197, 94, 0.7));
+  }
+}
