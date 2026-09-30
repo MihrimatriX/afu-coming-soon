@@ -2,6 +2,8 @@
 
 A modern and interactive "Coming Soon" page featuring retro CRT TV screen effects, glitch animations, and custom cursor design that delivers a stunning user experience.
 
+![AFU Coming Soon — retro CRT scene](public/og-image.jpg)
+
 ## 🏷️ Tags
 
 `nextjs` `react` `typescript` `tailwindcss` `coming-soon` `retro` `crt-effect` `glitch-animation` `custom-cursor` `docker` `modern-ui` `interactive` `full-stack-developer` `computer-graphics` `geek`

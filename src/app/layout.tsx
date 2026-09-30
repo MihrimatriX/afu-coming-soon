@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
@@ -9,14 +9,22 @@ const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
 });
 
+// mobil tarayıcı çubuğu sayfa arka planıyla (--background) aynı renkte olsun
+export const viewport: Viewport = { themeColor: "#0a0a0a" };
+
+// Google başlığı ~60, açıklamayı ~160 karakterde keser; OG/Twitter/JSON-LD de aynı metni kullanır
+const SITE_NAME = "Ahmet Faruk Uzunkaya";
+const TITLE = "Ahmet Faruk Uzunkaya | Full Stack Developer & Graphics";
+const DESCRIPTION =
+  "Full Stack Developer, Computer Graphics meraklısı. Web geliştirme, bilgisayar grafikleri ve eğitim içerikleri çok yakında burada. Education. Graphics. Code.";
+
 export const metadata: Metadata = {
   // og:image gibi göreli adresler bu kök adrese göre çözülür
   metadataBase: new URL("https://ahmetfuzunkaya.com"),
   // statik ikon: tarayıcı /favicon.ico aramasın (favicon.js yüklenince bunu canlı ikonla değiştirir)
   icons: { icon: "/favicon.svg" },
-  title: "Ahmet Faruk Uzunkaya | Kişisel Blog & Website - Full Stack Developer",
-  description:
-    "Ahmet Faruk Uzunkaya'nın kişisel blog ve websitesi. Full Stack Developer, Computer Graphics Enthusiast. Web development, computer graphics, eğitim içerikleri ve teknoloji yazıları. Education, Graphics, Code.",
+  title: TITLE,
+  description: DESCRIPTION,
   keywords: [
     "Ahmet Faruk Uzunkaya",
     "Ahmet Faruk Uzunkaya blog",
@@ -62,25 +70,22 @@ export const metadata: Metadata = {
     type: "website",
     locale: "tr_TR",
     url: "https://ahmetfuzunkaya.com",
-    title: "Ahmet Faruk Uzunkaya | Kişisel Blog & Website - Full Stack Developer",
-    description:
-      "Ahmet Faruk Uzunkaya'nın kişisel blog ve websitesi. Full Stack Developer, Computer Graphics Enthusiast. Web development, computer graphics ve teknoloji yazıları.",
-    siteName: "Ahmet Faruk Uzunkaya - Kişisel Blog",
+    title: TITLE,
+    description: DESCRIPTION,
+    siteName: SITE_NAME,
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Ahmet Faruk Uzunkaya - Full Stack Developer Blog",
+        alt: "Masada retro CRT monitör: PEK YAKINDA — Ahmet Faruk Uzunkaya",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ahmet Faruk Uzunkaya | Kişisel Blog & Website",
-    description:
-      "Full Stack Developer, Computer Graphics Enthusiast. Kişisel blog ve teknoloji yazıları. Education, Graphics, Code.",
-    creator: "@ahmetfuzunkaya",
+    title: TITLE,
+    description: DESCRIPTION,
     images: ["/og-image.jpg"],
   },
   alternates: {
@@ -132,10 +137,9 @@ export default function RootLayout({
               {
                 "@context": "https://schema.org",
                 "@type": "WebSite",
-                name: "Ahmet Faruk Uzunkaya - Kişisel Blog",
+                name: SITE_NAME,
                 url: "https://ahmetfuzunkaya.com",
-                description:
-                  "Ahmet Faruk Uzunkaya'nın kişisel blog ve websitesi. Full Stack Developer, Computer Graphics Enthusiast.",
+                description: DESCRIPTION,
                 author: {
                   "@type": "Person",
                   name: "Ahmet Faruk Uzunkaya",
@@ -145,38 +149,6 @@ export default function RootLayout({
                   name: "Ahmet Faruk Uzunkaya",
                 },
                 inLanguage: "tr-TR",
-                potentialAction: {
-                  "@type": "SearchAction",
-                  target: {
-                    "@type": "EntryPoint",
-                    urlTemplate: "https://ahmetfuzunkaya.com/search?q={search_term_string}",
-                  },
-                  "query-input": "required name=search_term_string",
-                },
-              },
-              {
-                "@context": "https://schema.org",
-                "@type": "Blog",
-                name: "Ahmet Faruk Uzunkaya Blog",
-                url: "https://ahmetfuzunkaya.com",
-                description:
-                  "Full Stack Developer, Computer Graphics ve Web Development konularında yazılar, eğitim içerikleri ve teknoloji paylaşımları.",
-                author: {
-                  "@type": "Person",
-                  name: "Ahmet Faruk Uzunkaya",
-                },
-                publisher: {
-                  "@type": "Person",
-                  name: "Ahmet Faruk Uzunkaya",
-                },
-                inLanguage: "tr-TR",
-                about: [
-                  "Web Development",
-                  "Computer Graphics",
-                  "Full Stack Development",
-                  "Education",
-                  "Programming",
-                ],
               },
             ]),
           }}
