@@ -1,0 +1,552 @@
+.scene {
+  display: flex;
+  --sw: min(calc(100vw - 8rem), calc(43vh * 4 / 3));
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+  min-height: 100vh;
+  padding: 6vh 1rem 0;
+  /* Kamera masanın biraz üstünde: masa yüzeyi ve eşyaların üstü görünür */
+  perspective: calc(var(--sw) * 2.6);
+  perspective-origin: 50% -12%;
+  background: radial-gradient(ellipse at 50% 40%, #1c211d 0%, #0a0a0a 65%);
+  /* 3B masa sayfayı kaydırılabilir yapmasın */
+  overflow: clip;
+}
+
+/* Tüm monitör; karşıdan bakar. Ölçüler ekran genişliğinden (--sw) türetilir */
+.rig {
+  --d1: 3.5rem;
+  --d2: calc(var(--sw) * 0.35);
+  --d3: calc(var(--sw) * 0.3);
+  --c: #d6cdb5;
+  /* Plastik dokusu: çok hafif gren */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27180%27 height=%27180%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%27.85%27 numOctaves=%272%27 stitchTiles=%27stitch%27/%3E%3CfeColorMatrix values=%270 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .1 0%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23n)%27/%3E%3C/svg%3E");
+  /* Ahşap damarı: yatayda düşük, dikeyde yüksek frekanslı gürültü → uzun çizgiler */
+  --wood: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%273200%27 height=%27320%27%3E%3Cfilter id=%27w%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%27.0015 .09%27 numOctaves=%273%27 seed=%277%27 stitchTiles=%27stitch%27/%3E%3CfeColorMatrix values=%270 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.3 0 0 0 -.45%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23w)%27/%3E%3C/svg%3E");
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+/* ---------- 3B kutu ---------- */
+.box {
+  position: absolute;
+  transform-style: preserve-3d;
+  transform: translateZ(var(--z, 0px)) rotateY(var(--ry, 0deg));
+}
+
+/* Her yüz: temel renk + ışık tonu (--shade) + derinliğe doğru kararma (--dir) */
+.box > div {
+  position: absolute;
+  backface-visibility: hidden;
+  background:
+    var(--grain),
+    linear-gradient(var(--dir, to bottom), transparent, var(--fade, rgba(0, 0, 0, 0.3))),
+    linear-gradient(var(--shade, transparent), var(--shade, transparent)),
+    var(--c);
+}
+
+.faceFront {
+  inset: 0;
+  --fade: transparent;
+  --shade: rgba(0, 0, 0, 0.05);
+}
+
+.faceBack {
+  inset: 0;
+  transform: translateZ(calc(-1 * var(--d))) rotateY(180deg);
+  --fade: transparent;
+  --shade: rgba(0, 0, 0, 0.25);
+}
+
+.faceLeft {
+  top: 0;
+  right: 100%;
+  width: var(--d);
+  height: 100%;
+  transform-origin: right;
+  transform: rotateY(-90deg);
+  --dir: to left;
+  --shade: rgba(0, 0, 0, 0.12);
+}
+
+.faceRight {
+  top: 0;
+  left: 100%;
+  width: var(--d);
+  height: 100%;
+  transform-origin: left;
+  transform: rotateY(90deg);
+  --dir: to right;
+  --shade: rgba(0, 0, 0, 0.22);
+}
+
+.faceTop {
+  left: 0;
+  bottom: 100%;
+  width: 100%;
+  height: var(--d);
+  transform-origin: bottom;
+  transform: rotateX(90deg);
+  --dir: to top;
+  --shade: rgba(255, 255, 255, 0.18);
+}
+
+/* Kutunun masaya düşen yumuşak gölgesi (yalnızca masaya değen kutularda) */
+.box > [data-face="shadow"] {
+  left: -8%;
+  right: -8%;
+  bottom: 0;
+  height: calc(var(--d) + var(--sw) * 0.05);
+  transform-origin: bottom;
+  transform: translateY(-1px) translateZ(calc(var(--sw) * 0.025)) rotateX(90deg);
+  backface-visibility: visible;
+  background: radial-gradient(ellipse 50% 50% at 50% 55%, rgba(0, 0, 0, 0.6), transparent 72%);
+}
+
+.faceBottom {
+  left: 0;
+  top: 100%;
+  width: 100%;
+  height: var(--d);
+  transform-origin: top;
+  transform: rotateX(-90deg);
+  --shade: rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- Gövde parçaları ---------- */
+/* Ön kasa kalınlığı */
+.shell {
+  inset: 0;
+  --d: var(--d1);
+}
+
+/* Tüpü saran arka gövde */
+.hood {
+  left: 5%;
+  right: 5%;
+  top: 4%;
+  bottom: 10%;
+  --z: calc(-1 * var(--d1));
+  --d: var(--d2);
+}
+
+/* Hood üstündeki havalandırma yarıkları */
+.hood .faceTop {
+  background:
+    var(--grain),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.16) 0 3px, transparent 3px 10px) center / 70% 45% no-repeat,
+    linear-gradient(var(--dir), transparent, var(--fade, rgba(0, 0, 0, 0.3))),
+    linear-gradient(var(--shade), var(--shade)),
+    var(--c);
+}
+
+/* Tüp boynunun daraldığı en arka kısım */
+.tail {
+  left: 22%;
+  right: 22%;
+  top: 14%;
+  bottom: 26%;
+  --z: calc(-1 * (var(--d1) + var(--d2)));
+  --d: var(--d3);
+  --c: #c9c0a9;
+}
+
+.neck {
+  left: 40%;
+  right: 40%;
+  top: 100%;
+  height: 1.6rem;
+  --z: calc(-1 * var(--d1) - var(--sw) * 0.12);
+  --d: calc(var(--sw) * 0.25);
+  --c: #b9b09a;
+}
+
+.base {
+  left: 24%;
+  right: 24%;
+  top: calc(100% + 1.6rem);
+  height: 0.9rem;
+  --z: calc(var(--sw) * -0.04);
+  --d: calc(var(--sw) * 0.6);
+}
+
+/* Tabanın masaya değdiği yerdeki temas gölgesi; masadan 1px yukarıda */
+.floorShadow {
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: calc(100% + 2.5rem - 1px);
+  height: calc(var(--sw) * 0.9);
+  transform-origin: top;
+  transform: translateZ(calc(var(--sw) * 0.05)) rotateX(-90deg);
+  background: radial-gradient(ellipse 50% 45% at 50% 45%, rgba(0, 0, 0, 0.75), transparent 70%);
+  pointer-events: none;
+}
+
+/* ---------- Ön yüz ---------- */
+.front {
+  --fp: clamp(0.8rem, 2vw, 1.5rem);
+  position: relative;
+  padding: var(--fp) var(--fp) 0;
+  border-radius: 0.9rem 0.9rem 0.6rem 0.6rem;
+  background:
+    var(--grain),
+    linear-gradient(180deg, #e9e2cf 0%, #ddd4bd 50%, #cdc3a9 100%);
+  /* Yuvarlatılmış plastik kenarlar: üst ve sol ışık alır */
+  box-shadow:
+    inset 0 2px 1px rgba(255, 255, 255, 0.85),
+    inset 0 -2px 1px rgba(0, 0, 0, 0.18),
+    inset 3px 0 3px -1px rgba(255, 255, 255, 0.35),
+    inset -3px 0 3px -1px rgba(0, 0, 0, 0.1),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+/* Cama doğru eğimli çerçeve: her kenar farklı renk → köşelerde doğal eğim.
+   Üst eğim gölgede, alt eğim ışık alır. İçteki siyah dolgu camın contası. */
+.bezel {
+  --bw: clamp(0.8rem, 2.2vw, 1.7rem);
+  padding: 4px;
+  border: var(--bw) solid;
+  border-color: #b2a88f #cbc2aa #efe9db #c2b9a1;
+  border-radius: calc(2.4rem + var(--bw)) / calc(2.8rem + var(--bw));
+  background: #0a0a0a;
+  box-shadow:
+    0 -1px 0 rgba(0, 0, 0, 0.18),
+    0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* 4:3 tüp; içerik bu kutunun genişliğine göre ölçeklenir (cqw) */
+.screen {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  container-type: inline-size;
+  width: var(--sw);
+  aspect-ratio: 4 / 3;
+  border-radius: 2.2rem / 2.6rem;
+  background: radial-gradient(ellipse at center, #0c2414 0%, #040a06 70%, #010201 100%);
+  /* Fosforun ışığı çerçevenin iç eğimine vurur */
+  box-shadow:
+    0 0 0 1px #000,
+    0 0 28px 6px rgba(74, 222, 128, 0.12);
+}
+
+/* Cam: pencere yansıması, sol üstten genel parlaklık, kenarlara doğru kararma */
+.screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    radial-gradient(ellipse 55% 30% at 28% 6%, rgba(255, 255, 255, 0.16), transparent 70%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.05) 0%, transparent 35%),
+    radial-gradient(ellipse 25% 12% at 82% 92%, rgba(255, 255, 255, 0.035), transparent 70%),
+    radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.6) 100%);
+  box-shadow:
+    inset 0 0 3rem 1rem rgba(0, 0, 0, 0.75),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.tube {
+  position: absolute;
+  inset: 0;
+}
+
+/* Alt panel: üstünde kalıp birleşim çizgisi, tam genişlik */
+.chin {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin: clamp(0.6rem, 1.4vw, 1rem) calc(-1 * var(--fp)) 0;
+  padding: 0.7rem calc(var(--fp) + 0.2rem) 0.9rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+/* Siyah marka plakası */
+.badge {
+  padding: 0.3rem 0.55rem;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #3b3833, #1d1b18);
+  color: #e3dccb;
+  font: 700 0.62rem/1 "Courier New", Consolas, monospace;
+  letter-spacing: 0.28em;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 1px 0 rgba(255, 255, 255, 0.7),
+    0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Havalandırma yarıkları: koyu derinlik + açık alt dudak */
+.grille {
+  flex: 1;
+  height: 0.7rem;
+  opacity: 0.55;
+  background: repeating-linear-gradient(90deg, #6f6754 0 2px, #a39a83 2px 3px, transparent 3px 8px);
+}
+
+/* Düğmelerin oturduğu içe gömük panel */
+.panel {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.3rem 0.55rem;
+  border-radius: 0.45rem;
+  background: linear-gradient(180deg, #c3b9a0, #d6cdb6);
+  box-shadow:
+    inset 0 2px 3px rgba(0, 0, 0, 0.25),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.5),
+    0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Tırtıklı ayar düğmesi */
+.knob {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(rgba(0, 0, 0, 0.09) 0 6deg, transparent 6deg 12deg),
+    radial-gradient(circle at 35% 30%, #fbf8ef, #c2b8a0 70%);
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.35),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.25);
+}
+
+.power {
+  width: 1.6rem;
+  height: 0.95rem;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #f1ebdc, #cfc6ae);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.12);
+}
+
+.led {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #bbf7d0, #22c55e 60%);
+  box-shadow:
+    0 0 5px #4ade80,
+    0 0 12px rgba(74, 222, 128, 0.55),
+    inset 0 0 1px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- Oda: duvardaki objeler ---------- */
+/* Floresan armatür */
+.fluo {
+  position: absolute;
+  z-index: 3;
+  top: 1.2vh;
+  left: 50%;
+  width: min(44rem, 52vw);
+  height: 1.4rem;
+  transform: translateX(-50%);
+  border-radius: 3px;
+  background: linear-gradient(180deg, #5a5c58, #2c2d2b);
+  box-shadow:
+    0 6px 14px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.fluoTube {
+  position: absolute;
+  left: 3%;
+  right: 3%;
+  bottom: -3px;
+  height: 9px;
+  border-radius: 5px;
+  background: linear-gradient(180deg, #ffffff, #dff7e8 60%, #b9d9c6);
+  box-shadow:
+    0 0 12px 3px rgba(225, 255, 236, 0.75),
+    0 0 60px 12px rgba(200, 255, 220, 0.25);
+  animation: fluo-flicker 9s linear infinite;
+}
+
+/* Lambanın duvara düşen ışığı; lambayla aynı ritimde titrer */
+.fluoLight {
+  position: absolute;
+  z-index: 2;
+  inset: 0 0 auto;
+  height: 75vh;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(ellipse 50% 70% at 50% 0%, rgba(215, 255, 230, 0.12), transparent 70%);
+  animation: fluo-flicker 9s linear infinite;
+}
+
+/* Uzun süre sabit, ara sıra balast teklemesi */
+@keyframes fluo-flicker {
+  0%, 30%, 31.6%, 33%, 71%, 72.5%, 100% {
+    opacity: 1;
+  }
+  30.5% {
+    opacity: 0.2;
+  }
+  31.2% {
+    opacity: 0.85;
+  }
+  32% {
+    opacity: 0.1;
+  }
+  71.8% {
+    opacity: 0.45;
+  }
+}
+
+/* Çiviye asılı duvar takvimi; loş odada soluk */
+.calendar {
+  position: absolute;
+  z-index: 3;
+  top: 16vh;
+  left: max(2rem, 6vw);
+  width: 9.5rem;
+  padding-bottom: 0.5rem;
+  background: linear-gradient(180deg, #ece3cb, #ddd1b4);
+  color: #3a3228;
+  font: 700 0.55rem/1 "Courier New", Consolas, monospace;
+  transform: rotate(-2.5deg);
+  box-shadow: 4px 8px 14px rgba(0, 0, 0, 0.55);
+  filter: brightness(0.62) sepia(0.2);
+}
+
+.calendar::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #777;
+  box-shadow: 0 1px 1px #000;
+  transform: translateX(-50%);
+}
+
+.calHead {
+  padding: 0.5rem 0 0.4rem;
+  text-align: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  background: #a3322a;
+  color: #f3e9d2;
+}
+
+.calGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  padding: 0.4rem 0.45rem 0;
+  text-align: center;
+}
+
+.calGrid b {
+  color: #a3322a;
+}
+
+.calGrid span {
+  padding: 2px 0;
+}
+
+.circled {
+  outline: 1.5px solid #c0392b;
+  border-radius: 50%;
+}
+
+/* Monitörle çakışacak kadar dar ekranda takvim yok */
+@media (max-width: 1199px) {
+  .calendar {
+    display: none;
+  }
+}
+
+.soundToggle {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.45);
+  color: #86efac;
+  font: 700 0.7rem/1 "Courier New", Consolas, monospace;
+  letter-spacing: 0.12em;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.soundToggle:hover,
+.soundToggle:focus-visible {
+  border-color: #4ade80;
+  box-shadow: 0 0 12px rgba(74, 222, 128, 0.35);
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fluoTube,
+  .fluoLight {
+    animation: none;
+  }
+}
+
+/* ---------- Mobil: telefonun kendisi CRT ekranı ---------- */
+/* Oda, masa ve 3B gövde gizlenir; ön yüz tüm ekranı kaplar */
+@media (max-width: 640px) {
+  .scene {
+    align-items: stretch;
+    min-height: 100svh;
+    padding: 0;
+    perspective: none;
+  }
+
+  .rig {
+    width: 100%;
+  }
+
+  .box,
+  .floorShadow,
+  .fluo,
+  .fluoLight,
+  .soundToggle {
+    display: none;
+  }
+
+  .front {
+    --fp: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+    border-radius: 0;
+  }
+
+  .bezel {
+    --bw: 0.7rem;
+    flex: 1;
+    display: flex;
+    border-radius: calc(1.4rem + var(--bw)) / calc(1.8rem + var(--bw));
+  }
+
+  .screen {
+    flex: 1;
+    display: flex;
+    width: auto;
+    aspect-ratio: auto;
+    border-radius: 1.4rem / 1.8rem;
+  }
+
+  /* Tüp akışa girer: içerik uzunsa ekran uzar, kısaysa ekranı doldurur */
+  .tube {
+    position: relative;
+    flex: 1;
+    /* flex öğesi içeriğin min genişliğine kilitlenmesin (buton ızgarası 2 sütuna şişiriyor) */
+    min-width: 0;
+  }
+}

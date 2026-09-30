@@ -1,0 +1,478 @@
+/* Masa, duvar ve masa üstü eşyaları.
+   3B kutu (Box) ile --wood / --grain değişkenleri crt-monitor.module.css'ten gelir.
+   Birim: --sw (ekran genişliği). x: merkezden sağa, zf: ön yüzün z'si (izleyiciye doğru +),
+   dp: derinlik (arkaya), h: yükseklik, y: masadan yukarı yükseklik. */
+
+.props {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  pointer-events: none;
+  /* masa yüzeyinin dikey konumu: monitör tabanının alt kenarı */
+  --dy: calc(100% + 2.5rem);
+}
+
+@media (max-width: 640px) {
+  .props {
+    display: none;
+  }
+}
+
+/* ---------- Yerleşim yardımcıları ---------- */
+/* Masa yüzeyinde yatan düz öğe: üst kenarı arkaya bakar (haritadaki gibi) */
+.flat {
+  position: absolute;
+  left: calc(50% + var(--sw) * var(--x));
+  width: calc(var(--sw) * var(--w));
+  height: calc(var(--sw) * var(--l));
+  top: calc(var(--dy) - var(--lift, 1px) - var(--sw) * var(--l));
+  transform-origin: bottom;
+  transform: translateZ(calc(var(--sw) * var(--zf))) rotateX(90deg) rotate(var(--yaw, 0deg));
+}
+
+/* Masada duran 3B kutu */
+.item {
+  left: calc(50% + var(--sw) * var(--x));
+  width: calc(var(--sw) * var(--w));
+  height: calc(var(--sw) * var(--h));
+  top: calc(var(--dy) - var(--sw) * (var(--h) + var(--y, 0)));
+  --z: calc(var(--sw) * var(--zf));
+  --d: calc(var(--sw) * var(--dp));
+}
+
+/* ---------- Duvar ---------- */
+.wall {
+  position: absolute;
+  left: 50%;
+  width: calc(var(--sw) * 8);
+  margin-left: calc(var(--sw) * -4);
+  height: calc(var(--sw) * 5);
+  top: calc(var(--dy) - var(--sw) * 5);
+  transform: translateZ(calc(var(--sw) * -1.2));
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0 1.5px, transparent 2.5px) 0 0 / 1.7rem 1.7rem,
+    repeating-linear-gradient(90deg, #252c25 0 2.6rem, #1b201b 2.6rem 2.8rem, #222922 2.8rem 5.4rem, #181c18 5.4rem 5.6rem),
+    #1c211c;
+  box-shadow: inset 0 -3rem 4rem rgba(0, 0, 0, 0.55);
+}
+
+/* ---------- Masa yüzeyi ---------- */
+.surface {
+  --x: -2;
+  --w: 4;
+  --l: 1.7;
+  --zf: 0.5;
+  --lift: 0px;
+  background:
+    /* kenarlara ve arkaya doğru kararma */
+    linear-gradient(90deg, rgba(0, 0, 0, 0.8), transparent 26% 74%, rgba(0, 0, 0, 0.8)),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent 45%),
+    /* ekranın masaya düşen yeşil ışığı */
+    radial-gradient(ellipse 17% 20% at 50% 84%, rgba(74, 222, 128, 0.1), transparent 70%),
+    /* verniğin floresan tüpünü yansıtan parlak çizgisi ve genel parlaması */
+    radial-gradient(ellipse 20% 1.6% at 50% 26%, rgba(255, 255, 255, 0.2), transparent 75%),
+    radial-gradient(ellipse 40% 55% at 50% 38%, rgba(255, 235, 210, 0.1), transparent 75%),
+    /* eski kupa halkaları */
+    radial-gradient(circle 1.7rem at 33.6% 88%, transparent 0 82%, rgba(28, 12, 3, 0.4) 88% 94%, transparent 100%),
+    radial-gradient(circle 1.6rem at 32.9% 87%, transparent 0 84%, rgba(28, 12, 3, 0.22) 90% 95%, transparent 100%),
+    radial-gradient(circle 1.7rem at 79% 52%, transparent 0 82%, rgba(28, 12, 3, 0.32) 88% 94%, transparent 100%),
+    /* kısa çizikler: her katman küçük bir kutuda tek diyagonal çizgi */
+    linear-gradient(168deg, transparent 46%, rgba(255, 235, 210, 0.16) 50%, transparent 54%) 41% 74% / 90px 14px no-repeat,
+    linear-gradient(12deg, transparent 46%, rgba(255, 235, 210, 0.12) 50%, transparent 54%) 62% 58% / 60px 10px no-repeat,
+    linear-gradient(172deg, transparent 47%, rgba(0, 0, 0, 0.22) 50%, transparent 53%) 27% 66% / 110px 12px no-repeat,
+    linear-gradient(8deg, transparent 47%, rgba(255, 235, 210, 0.1) 50%, transparent 53%) 71% 82% / 70px 10px no-repeat,
+    linear-gradient(160deg, transparent 47%, rgba(0, 0, 0, 0.2) 50%, transparent 53%) 55% 40% / 80px 16px no-repeat,
+    var(--wood) 50% 0 / 3200px 320px,
+    linear-gradient(90deg, #47301f, #5e4030 50%, #47301f);
+}
+
+/* Masanın öne bakan kalınlığı: üst pah ışık alır, ortada çekmece */
+.edge {
+  position: absolute;
+  left: 50%;
+  width: calc(var(--sw) * 4);
+  margin-left: calc(var(--sw) * -2);
+  top: var(--dy);
+  height: calc(var(--sw) * 0.11);
+  transform: translateZ(calc(var(--sw) * 0.5));
+  background:
+    linear-gradient(to bottom, rgba(255, 224, 190, 0.35) 0 2px, rgba(255, 224, 190, 0.08) 2px 5px, transparent 5px 30%, rgba(0, 0, 0, 0.5) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.7), transparent 25% 75%, rgba(0, 0, 0, 0.7)),
+    var(--wood) 50% 0 / 3200px 320px,
+    #3a2618;
+}
+
+.edge::before {
+  content: "";
+  position: absolute;
+  left: 34%;
+  right: 34%;
+  top: 24%;
+  bottom: 14%;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  background: linear-gradient(to bottom, rgba(255, 224, 190, 0.05), rgba(0, 0, 0, 0.12));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 224, 190, 0.18),
+    0 1px 0 rgba(255, 224, 190, 0.14);
+}
+
+/* pirinç çekmece kulpu */
+.edge::after {
+  content: "";
+  position: absolute;
+  left: 46.5%;
+  right: 46.5%;
+  top: 45%;
+  height: 16%;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, #f2d88a, #b58a2f 55%, #7a5a1a);
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- Kablolar ---------- */
+.cables {
+  --x: -1.5;
+  --w: 3;
+  --l: 1.7;
+  --zf: 0.5;
+  --lift: 1.5px;
+  overflow: visible;
+}
+
+.cables path {
+  fill: none;
+  stroke: #161616;
+  stroke-width: 3px;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ---------- Mouse pad ve defter (düz) ---------- */
+.pad {
+  --x: 0.42;
+  --w: 0.3;
+  --l: 0.25;
+  --zf: 0.39;
+  --lift: 2px;
+  border-radius: 6px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent 50%),
+    var(--grain),
+    #21406b;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.notepad {
+  --x: -1.06;
+  --w: 0.26;
+  --l: 0.32;
+  --zf: 0.45;
+  --lift: 2.5px;
+  --yaw: -6deg;
+  padding: 0.5rem 0.4rem 0 0.9rem;
+  background:
+    linear-gradient(180deg, #b23a30 0 7%, transparent 7%),
+    linear-gradient(90deg, transparent 15%, rgba(200, 50, 50, 0.5) 15% calc(15% + 1px), transparent 0),
+    repeating-linear-gradient(180deg, transparent 0 0.8rem, rgba(60, 90, 200, 0.4) 0.8rem calc(0.8rem + 1px)) 0 7% / 100% 100%,
+    #efe8d2;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.25),
+    0 3px 5px rgba(0, 0, 0, 0.55);
+  color: #26386b;
+  font: 0.62rem/0.8rem "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
+  white-space: pre-line;
+}
+
+/* ---------- Klavye ---------- */
+.keyboard {
+  --x: -0.34;
+  --w: 0.68;
+  --h: 0.034;
+  --zf: 0.36;
+  --dp: 0.22;
+  --c: #d6cdb5;
+}
+
+/* Üst yüz: gövde, üzerinde tuş ızgarası */
+.keyboard > [data-face="top"]::before {
+  content: "";
+  position: absolute;
+  inset: 8% 3% 9%;
+  border-radius: 2px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent 50%, rgba(0, 0, 0, 0.12)) 0 0 / calc(100% / 15) calc(100% / 5),
+    linear-gradient(90deg, transparent 0 84%, #4a4438 84% 100%) 0 0 / calc(100% / 15) 100%,
+    linear-gradient(0deg, transparent 0 78%, #4a4438 78% 100%) 0 0 / 100% calc(100% / 5),
+    #e6dfca;
+  box-shadow: 0 0 0 2px rgba(60, 54, 42, 0.5);
+}
+
+/* Boşluk çubuğu */
+.keyboard > [data-face="top"]::after {
+  content: "";
+  position: absolute;
+  left: 22%;
+  right: 28%;
+  bottom: 10.5%;
+  height: 14%;
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), #e6dfca 45%, #cfc7ad);
+  box-shadow: 0 0 0 2px #4a4438;
+}
+
+/* ---------- Mouse ---------- */
+.mouse {
+  --x: 0.53;
+  --w: 0.07;
+  --h: 0.03;
+  --zf: 0.31;
+  --dp: 0.11;
+  --y: 0.0005;
+  --c: #d6cdb5;
+}
+
+.mouse > [data-face="top"] {
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)) 0 42% / 100% 1px no-repeat,
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)) 50% 0 / 1px 42% no-repeat,
+    var(--grain),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.1)),
+    #d6cdb5;
+  border-radius: 6px 6px 4px 4px;
+}
+
+/* ---------- Kupa (dik durur; kamera hep karşıdan baktığı için 3B'ye gerek yok) ---------- */
+.mug {
+  position: absolute;
+  left: calc(50% + var(--sw) * -0.8);
+  width: calc(var(--sw) * 0.11);
+  height: calc(var(--sw) * 0.125);
+  top: calc(var(--dy) - var(--sw) * 0.125);
+  transform: translateZ(calc(var(--sw) * 0.18));
+  border-radius: 3% 3% 45% 45% / 3% 3% 10% 10%;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0%, transparent 18% 62%, rgba(0, 0, 0, 0.45) 100%),
+    linear-gradient(90deg, transparent 22%, rgba(255, 255, 255, 0.35) 26% 32%, transparent 38%),
+    #b8473a;
+  box-shadow: 0 6px 6px -2px rgba(0, 0, 0, 0.6);
+}
+
+/* Kahvenin yüzeyi */
+.mug::before {
+  content: "";
+  position: absolute;
+  top: -8%;
+  left: 0;
+  right: 0;
+  height: 16%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 55%, #2b160b 0 60%, #d2685a 66% 100%);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+/* Kulp */
+.mug::after {
+  content: "";
+  position: absolute;
+  left: 86%;
+  top: 20%;
+  width: 36%;
+  height: 52%;
+  border: calc(var(--sw) * 0.014) solid #a13d31;
+  border-left: 0;
+  border-radius: 0 60% 60% 0;
+}
+
+.steam {
+  position: absolute;
+  bottom: 85%;
+  width: 42%;
+  height: 130%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(236, 246, 240, 0.75), transparent 70%);
+  filter: blur(6px);
+  opacity: 0;
+  animation: steam 4.5s ease-out infinite;
+}
+
+.steam:nth-child(1) {
+  left: 8%;
+}
+
+.steam:nth-child(2) {
+  left: 46%;
+  animation-delay: 1.5s;
+}
+
+.steam:nth-child(3) {
+  left: 26%;
+  animation-delay: 3s;
+}
+
+@keyframes steam {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.5);
+  }
+  20% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(22px, -120%) scale(1.5);
+  }
+}
+
+/* ---------- Kitaplar ---------- */
+.book {
+  --dp: 0.26;
+}
+
+.book > [data-face="front"] {
+  background:
+    repeating-linear-gradient(180deg, transparent 0 2px, rgba(0, 0, 0, 0.13) 2px 3px),
+    linear-gradient(180deg, var(--c) 0 18%, #efe6cf 18% 82%, var(--c) 82%);
+}
+
+.book1 {
+  --x: -1.18;
+  --w: 0.3;
+  --h: 0.04;
+  --zf: -0.3;
+  --c: #6b2f2a;
+}
+
+.book2 {
+  --x: -1.16;
+  --w: 0.27;
+  --h: 0.034;
+  --y: 0.04;
+  --zf: -0.28;
+  --ry: 5deg;
+  --c: #2f4a3c;
+}
+
+.book3 {
+  --x: -1.19;
+  --w: 0.23;
+  --h: 0.03;
+  --y: 0.074;
+  --zf: -0.3;
+  --ry: -4deg;
+  --c: #b8a06a;
+}
+
+/* ---------- Kalem ---------- */
+.pencil {
+  --x: -0.7;
+  --w: 0.24;
+  --h: 0.008;
+  --zf: 0.4;
+  --dp: 0.008;
+  --ry: -22deg;
+  --c: #e2b52f;
+}
+
+.pencil > [data-face="top"] {
+  background: linear-gradient(90deg, #d97b86 0 7%, #b8b8b8 7% 11%, #e2b52f 11% 90%, #d9b99a 90% 95%, #333 95%);
+}
+
+/* ---------- Disketler ---------- */
+.floppy {
+  --x: 0.76;
+  --w: 0.15;
+  --h: 0.006;
+  --zf: 0.14;
+  --dp: 0.15;
+  --c: #232326;
+}
+
+.floppy2 {
+  --x: 0.78;
+  --y: 0.006;
+  --ry: 14deg;
+  --c: #2f4f7a;
+}
+
+.floppy > [data-face="top"] {
+  background:
+    linear-gradient(90deg, #8d9196, #d5d8dc 40%, #9a9ea3) 50% 0 / 42% 34% no-repeat,
+    linear-gradient(#f2eee4, #e4dfd2) 50% 88% / 78% 50% no-repeat,
+    var(--grain),
+    var(--c);
+}
+
+.floppy > [data-face="top"]::after {
+  content: "AFU OS";
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  bottom: 22%;
+  text-align: center;
+  font: 700 0.6rem/1 "Segoe Print", "Comic Sans MS", cursive;
+  color: #1d4ed8;
+  transform: rotate(-3deg);
+}
+
+/* ---------- Kaset ---------- */
+.cassette {
+  --x: 0.84;
+  --w: 0.2;
+  --h: 0.022;
+  --zf: 0.4;
+  --dp: 0.13;
+  --ry: -10deg;
+  --c: #1b1b1d;
+}
+
+.cassette > [data-face="top"] {
+  background:
+    radial-gradient(circle 0.42rem at 30% 66%, #e8e4d8 0 40%, #444 44% 70%, transparent 74%),
+    radial-gradient(circle 0.42rem at 70% 66%, #e8e4d8 0 40%, #444 44% 70%, transparent 74%),
+    linear-gradient(#0c0c0d, #0c0c0d) 50% 66% / 66% 34% no-repeat,
+    linear-gradient(#efe7cf, #efe7cf) 50% 10% / 82% 30% no-repeat,
+    var(--grain),
+    #26262a;
+}
+
+.cassette > [data-face="top"]::after {
+  content: "MIX '87";
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 14%;
+  text-align: center;
+  font: 700 0.5rem/1 "Segoe Print", "Comic Sans MS", cursive;
+  color: #b91c1c;
+}
+
+/* ---------- Kablolu priz ---------- */
+.strip {
+  --x: 0.6;
+  --w: 0.34;
+  --h: 0.03;
+  --zf: -1;
+  --dp: 0.08;
+  --c: #e6e0d0;
+}
+
+.strip > [data-face="top"] {
+  background:
+    radial-gradient(ellipse 9% 30% at 20% 50%, #2e2e2e 0 60%, transparent 68%),
+    radial-gradient(ellipse 9% 30% at 42% 50%, #2e2e2e 0 60%, transparent 68%),
+    radial-gradient(ellipse 9% 30% at 64% 50%, #2e2e2e 0 60%, transparent 68%),
+    radial-gradient(ellipse 4% 26% at 90% 50%, #ff4a3d 0 40%, rgba(255, 74, 61, 0.35) 70%, transparent 100%),
+    var(--grain),
+    #e6e0d0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .steam {
+    animation: none;
+  }
+}

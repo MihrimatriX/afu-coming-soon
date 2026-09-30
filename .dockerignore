@@ -1,0 +1,12 @@
+# Gereksiz dosya ve klasörleri Docker build sürecinden hariç tutuyoruz
+node_modules
+.next
+.git
+.github
+.vscode
+.DS_Store
+README.md
+.env*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
