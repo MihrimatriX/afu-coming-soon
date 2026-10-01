@@ -85,6 +85,7 @@ afu-coming-soon/
 │   └── app/
 │       ├── page.tsx          # Main page component
 │       ├── layout.tsx         # Root layout
+│       ├── not-found.tsx      # 404 page ("no signal" CRT screen)
 │       ├── globals.css        # Global styles
 │       └── page.module.css    # Page-specific styles
 ├── public/
