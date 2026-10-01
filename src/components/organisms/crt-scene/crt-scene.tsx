@@ -9,7 +9,7 @@ import { BlendFunction, ToneMappingMode } from "postprocessing";
 import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 import { bootProgress } from "@/components/organisms/boot-screen/boot-progress";
 import { useFluorescentHum } from "@/hooks/use-fluorescent-hum";
-import type { ScreenLink } from "./crt-screen";
+import type { ScreenLink, ScreenText } from "./crt-screen";
 import { TouchHand } from "./hand";
 import { Monitor } from "./monitor";
 import { Book, Books, Cable, Cactus, Cassette, Floppy, Keyboard, MouseAndPad, Mug, Notepad, Pencil, Pushable, Rubik, Shelf, Strip } from "./props";
@@ -187,7 +187,7 @@ const OUTLET_CABLE: [number, number, number][] = [
   [0.62, 0.2, -0.688],
 ];
 
-const Scene: FC<{ links: ScreenLink[]; onCompiled: () => void }> = ({ links, onCompiled }) => {
+const Scene: FC<{ links: ScreenLink[]; text: ScreenText; onCompiled: () => void }> = ({ links, text, onCompiled }) => {
   const [power, setPower] = useState(true);
   const [knobs, setKnobs] = useState<[number, number]>([2, 2]);
 
@@ -215,6 +215,7 @@ const Scene: FC<{ links: ScreenLink[]; onCompiled: () => void }> = ({ links, onC
         <Desk />
         <Monitor
           links={links}
+          text={text}
           position={[0, 0.336, -0.07]}
           power={power}
           onPower={() => setPower((p) => !p)}
@@ -274,7 +275,7 @@ const Scene: FC<{ links: ScreenLink[]; onCompiled: () => void }> = ({ links, onC
   );
 };
 
-export const CrtScene: FC<{ links: ScreenLink[] }> = ({ links }) => {
+export const CrtScene: FC<{ links: ScreenLink[]; text: ScreenText }> = ({ links, text }) => {
   const hum = useFluorescentHum();
   const [texturesReady, setTexturesReady] = useState(false);
   const [live, setLive] = useState(false);
@@ -314,7 +315,7 @@ export const CrtScene: FC<{ links: ScreenLink[] }> = ({ links }) => {
         camera={{ fov: 36, near: 0.05, far: 20, position: [0, 0.42, 1.1] }}
         gl={{ antialias: false, powerPreference: "high-performance" }}
       >
-        <Scene links={links} onCompiled={onCompiled} />
+        <Scene links={links} text={text} onCompiled={onCompiled} />
       </Canvas>
       )}
       <button type="button" className={styles.sound} onClick={hum.toggle} aria-pressed={hum.on}>

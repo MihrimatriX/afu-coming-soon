@@ -5,3 +5,4 @@ export const CrtScene = dynamic(() => import("./crt-scene").then((m) => m.CrtSce
   ssr: false,
   loading: () => null,
 });
+export type { ScreenLink, ScreenText } from "./crt-screen";
