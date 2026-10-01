@@ -1,11 +1,11 @@
 import React, { type FC } from "react";
 import styles from "./system-message.module.css";
 
-export const SystemMessage: FC = () => {
+export const SystemMessage: FC<{ text?: string }> = ({ text = "System initializing..." }) => {
   return (
     <div className={styles.systemMessage}>
       <p className={styles.text}>
-        System initializing... <span className={styles.cursor}>_</span>
+        {text} <span className={styles.cursor}>_</span>
       </p>
     </div>
   );

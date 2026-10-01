@@ -4,7 +4,7 @@ import React, { useMemo, useRef, type FC } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { RoundedBox } from "@react-three/drei";
-import { CrtScreen, type ScreenLink } from "./crt-screen";
+import { CrtScreen, type ScreenLink, type ScreenText } from "./crt-screen";
 import { playKnob, playPower } from "./sfx";
 import { getGrain, getPlate } from "./textures";
 
@@ -142,6 +142,7 @@ const PowerButton: FC<{ x: number; onClick: () => void }> = ({ x, onClick }) => 
 
 type Props = {
   links: ScreenLink[];
+  text: ScreenText;
   position: [number, number, number];
   power: boolean;
   onPower: () => void;
@@ -149,7 +150,7 @@ type Props = {
   onKnob: (i: 0 | 1) => void;
 };
 
-export const Monitor: FC<Props> = ({ links, position, power, onPower, knobs, onKnob }) => {
+export const Monitor: FC<Props> = ({ links, text, position, power, onPower, knobs, onKnob }) => {
   const grain = useMemo(getGrain, []);
   const led = useRef<THREE.MeshStandardMaterial>(null);
   useFrame((_, dt) => {
@@ -198,6 +199,7 @@ export const Monitor: FC<Props> = ({ links, position, power, onPower, knobs, onK
 
       <CrtScreen
         links={links}
+        text={text}
         position={[0, HY, -DEPTH - 0.008]}
         size={[0.338, 0.2535]}
         bulge={0.012}

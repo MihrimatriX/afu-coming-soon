@@ -82,12 +82,14 @@ docker run -p 3000:3000 afu-coming-soon
 ```
 afu-coming-soon/
 ├── src/
-│   └── app/
-│       ├── page.tsx          # Main page component
-│       ├── layout.tsx         # Root layout
-│       ├── not-found.tsx      # 404 page ("no signal" CRT screen)
-│       ├── globals.css        # Global styles
-│       └── page.module.css    # Page-specific styles
+│   ├── app/
+│   │   ├── page.tsx           # Main page (CRT scene with "PEK YAKINDA")
+│   │   ├── not-found.tsx      # 404 page (same scene, "404" on screen)
+│   │   ├── layout.tsx         # Root layout
+│   │   └── globals.css        # Global styles
+│   ├── components/
+│   │   └── templates/crt-page # Shared CRT scene page (3D on desktop, CSS on mobile)
+│   └── constants/             # Social links
 ├── public/
 │   ├── favicon.js            # Dynamic favicon
 │   └── favicon.svg           # Favicon SVG

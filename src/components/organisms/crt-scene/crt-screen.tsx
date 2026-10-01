@@ -11,6 +11,8 @@ const H = 768;
 const WARP = 0.07; // gölgelendiricideki bombe (barrel) katsayısıyla aynı olmalı
 
 export type ScreenLink = { label: string; url: string };
+// Ekrana yazılan metinler: başlık, altındaki satır, terminal kutusu ve alttaki durum satırı
+export type ScreenText = { title: string; subtitle: string; tagline: string; status: string };
 
 const BUTTONS = [
   { x: 186, y: 436, w: 318, h: 76 },
@@ -43,7 +45,7 @@ const openLink = (url: string) => {
 };
 
 // lvl: düğme başına 0..1 yumuşak "üstünde" değeri; pressed: şu an parlayan (seçilen) düğme
-type Draw = { t: number; lvl: number[]; pressed: number; glitch: number; font: string; links: ScreenLink[] };
+type Draw = { t: number; lvl: number[]; pressed: number; glitch: number; font: string; links: ScreenLink[]; text: ScreenText };
 
 const draw = (x: CanvasRenderingContext2D, s: Draw) => {
   const bg = x.createRadialGradient(W / 2, H / 2, 60, W / 2, H / 2, 700);
@@ -61,9 +63,9 @@ const draw = (x: CanvasRenderingContext2D, s: Draw) => {
     x.save();
     x.globalAlpha = 0.75;
     x.fillStyle = "#ff00ff";
-    x.fillText("PEK YAKINDA", W / 2 + 9 * s.glitch, 172);
+    x.fillText(s.text.title, W / 2 + 9 * s.glitch, 172);
     x.fillStyle = "#00ffff";
-    x.fillText("PEK YAKINDA", W / 2 - 9 * s.glitch, 172);
+    x.fillText(s.text.title, W / 2 - 9 * s.glitch, 172);
     x.restore();
   }
   x.shadowColor = "rgba(74,222,128,.95)";
@@ -79,11 +81,11 @@ const draw = (x: CanvasRenderingContext2D, s: Draw) => {
       x.beginPath();
       x.rect(0, y0, W, hh);
       x.clip();
-      x.fillText("PEK YAKINDA", W / 2 + dx * s.glitch, 172);
+      x.fillText(s.text.title, W / 2 + dx * s.glitch, 172);
       x.restore();
     }
   }
-  x.fillText("PEK YAKINDA", W / 2, 172);
+  x.fillText(s.text.title, W / 2, 172);
   x.shadowBlur = 0;
 
   x.font = `600 44px ${s.font}`;
@@ -91,7 +93,7 @@ const draw = (x: CanvasRenderingContext2D, s: Draw) => {
   x.shadowColor = "rgba(134,239,172,.6)";
   x.shadowBlur = 14;
   x.fillStyle = "#86efac";
-  x.fillText("AHMET FARUK UZUNKAYA", W / 2, 268);
+  x.fillText(s.text.subtitle.toLocaleUpperCase("tr"), W / 2, 268);
   x.shadowBlur = 0;
 
   // Terminal kutusu
@@ -105,7 +107,7 @@ const draw = (x: CanvasRenderingContext2D, s: Draw) => {
   x.font = `700 29px "Courier New", monospace`;
   x.letterSpacing = "4px";
   x.fillStyle = "#22c55e";
-  x.fillText("EDUCATION. GRAPHICS. CODE.", W / 2, 352);
+  x.fillText(s.text.tagline, W / 2, 352);
   x.shadowBlur = 0;
 
   // Terminal menüsü: numara rozeti + etiket. Üstüne gelince ters renk (dolu yeşil), seçince beyaz parlar.
@@ -149,7 +151,7 @@ const draw = (x: CanvasRenderingContext2D, s: Draw) => {
   x.font = `700 24px "Courier New", monospace`;
   x.letterSpacing = "1px";
   x.fillStyle = "rgba(74,222,128,.7)";
-  x.fillText(`System initializing...${s.t % 1 < 0.55 ? " _" : ""}`, W / 2, 648);
+  x.fillText(`${s.text.status}${s.t % 1 < 0.55 ? " _" : ""}`, W / 2, 648);
   x.font = `700 20px "Courier New", monospace`;
   x.letterSpacing = "3px";
   x.fillStyle = "rgba(74,222,128,.62)";
@@ -256,6 +258,7 @@ const FRAG = /* glsl */ `
 
 type Props = {
   links: ScreenLink[];
+  text: ScreenText;
   position: [number, number, number];
   size: [number, number];
   bulge?: number;
@@ -264,7 +267,7 @@ type Props = {
   contrast: number;
 };
 
-export const CrtScreen: FC<Props> = ({ links, position, size, bulge = 0.012, power, bright, contrast }) => {
+export const CrtScreen: FC<Props> = ({ links, text, position, size, bulge = 0.012, power, bright, contrast }) => {
   const [sw, sh] = size;
   const geo = useMemo(() => bulged(sw, sh, bulge), [sw, sh, bulge]);
   const { ctx, tex, uniforms } = useMemo(() => {
@@ -357,6 +360,7 @@ export const CrtScreen: FC<Props> = ({ links, position, size, bulge = 0.012, pow
       glitch: t < glitch.current.until || shock.t > 0 ? Math.random() : 0,
       font: font.current,
       links,
+      text,
     });
     tex.needsUpdate = true;
   });
