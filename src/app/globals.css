@@ -1,0 +1,105 @@
+/* Tailwind preflight'tan bu sayfanın dayandığı kısım */
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0 solid;
+}
+
+html {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+button {
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  background: transparent;
+}
+
+svg,
+canvas {
+  display: block;
+  vertical-align: middle;
+}
+
+/* Görünmez ama ekran okuyucu ve arama motoru okur */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+:root {
+  --background: #0a0a0a;
+  --primary: #22c55e;
+  --foreground: #171717;
+}
+
+html {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 100vw;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-space-grotesk), sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: visible;
+  cursor: none;
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+  filter: blur(0.2px);
+  -webkit-filter: blur(0.2px);
+  text-shadow: 0.5px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Hide Scrollbar */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+::-webkit-scrollbar-track {
+  display: none;
+}
+
+::-webkit-scrollbar-thumb {
+  display: none;
+}
+
+/* Firefox Scrollbar */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+* {
+  cursor: none !important;
+}

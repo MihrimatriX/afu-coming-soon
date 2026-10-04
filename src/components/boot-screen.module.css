@@ -1,0 +1,155 @@
+.boot {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: radial-gradient(ellipse at center, #071a0e 0%, #020403 75%);
+  color: #4ade80;
+  font: 700 clamp(0.8rem, 1.15vw, 1rem) / 1.7 "Courier New", Consolas, monospace;
+  letter-spacing: 0.06em;
+  text-shadow:
+    0 0 6px rgba(74, 222, 128, 0.7),
+    0 0 18px rgba(34, 197, 94, 0.3);
+  overflow: hidden;
+}
+
+/* tarama çizgileri ve köşe kararması */
+.boot::before,
+.boot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.boot::before {
+  background: repeating-linear-gradient(to bottom, transparent 0 2px, rgba(0, 0, 0, 0.28) 2px 3px);
+  animation: roll 7s linear infinite;
+}
+
+.boot::after {
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.75) 100%);
+}
+
+@keyframes roll {
+  to {
+    background-position: 0 60px;
+  }
+}
+
+.screen {
+  position: relative;
+  width: min(46rem, 100%);
+  animation: flicker 0.12s infinite alternate;
+}
+
+@keyframes flicker {
+  to {
+    opacity: 0.94;
+  }
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid rgba(74, 222, 128, 0.45);
+  color: #86efac;
+}
+
+.line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.dots {
+  flex: 1;
+  border-bottom: 2px dotted rgba(74, 222, 128, 0.35);
+}
+
+.ok {
+  color: #bbf7d0;
+}
+
+.busy {
+  color: #facc15;
+  text-shadow: 0 0 8px rgba(250, 204, 21, 0.6);
+}
+
+.bar {
+  margin: 0;
+  white-space: pre;
+  font-size: 1.1em;
+}
+
+.empty {
+  color: rgba(74, 222, 128, 0.25);
+}
+
+.cursor {
+  animation: blink 0.9s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* çıkış: tüp kapanır gibi önce yatay çizgiye, sonra noktaya çöker */
+.exit {
+  animation: collapse 0.75s ease-in forwards;
+}
+
+@keyframes collapse {
+  0% {
+    transform: scale(1, 1);
+    filter: brightness(1);
+    opacity: 1;
+  }
+  45% {
+    transform: scale(1, 0.004);
+    filter: brightness(3);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(0.02, 0.004);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0, 0);
+    opacity: 0;
+  }
+}
+
+/* mobilde 3B sahne yok; CSS sürümü anında açılır */
+@media (max-width: 640px) {
+  .boot {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot::before,
+  .screen,
+  .cursor {
+    animation: none;
+  }
+
+  .exit {
+    animation: fade 0.3s forwards;
+  }
+
+  @keyframes fade {
+    to {
+      opacity: 0;
+    }
+  }
+}
