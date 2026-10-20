@@ -1,0 +1,92 @@
+/* Açılışta tüpün tek çizgiden genişlemesi */
+@keyframes turn-on {
+  0% {
+    transform: scale(1, 0.002);
+    filter: brightness(4);
+    opacity: 0;
+  }
+  35% {
+    transform: scale(1, 0.002);
+    filter: brightness(4);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1, 1);
+    filter: brightness(1.6);
+  }
+  100% {
+    transform: scale(1, 1);
+    filter: brightness(1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .main {
+    animation: turn-on 1.4s ease-out;
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: safe center;
+  height: 100%;
+  width: 100%;
+  padding: 4cqw 5cqw;
+  position: relative;
+  z-index: 20;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  text-align: center;
+  position: relative;
+  z-index: 20;
+  gap: 0.75rem;
+}
+
+/* Masaüstünde ekran, monitörle birlikte küçülür (yükseklik odaklı); içerik de aynı oranda ölçeklenir.
+   Tasarım ~700px genişlikteki ekran için ayarlı. Mobilde ekran tüm sayfa olduğu için ölçeklenmez. */
+@media (min-width: 641px) {
+  @container (max-width: 700px) {
+    .content {
+      zoom: 0.92;
+    }
+  }
+
+  @container (max-width: 620px) {
+    .content {
+      zoom: 0.86;
+    }
+  }
+
+  @container (max-width: 560px) {
+    .content {
+      zoom: 0.78;
+    }
+  }
+
+  @container (max-width: 500px) {
+    .content {
+      zoom: 0.7;
+    }
+  }
+
+  @container (max-width: 440px) {
+    .content {
+      zoom: 0.63;
+    }
+  }
+}
+
+.titleSection {
+  margin-bottom: 0.5rem;
+}
